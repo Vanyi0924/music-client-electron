@@ -30,13 +30,13 @@ debugLogger.info("FOO", FOO);
 
 const isMac = process.platform === "darwin";
 
-const poolInstants = workerpool.pool(
-  resolve(__dirname, "./worker/index.js")
-);
+// const poolInstants = workerpool.pool(
+//   resolve(__dirname, "./worker/index.js")
+// );
 
-poolInstants.exec("say", []).then(result => {
-  console.log("result", result);
-})
+// poolInstants.exec("say", []).then(result => {
+//   console.log("result", result);
+// })
 
 let win: BrowserWindow;
 const createWindow = async () => {

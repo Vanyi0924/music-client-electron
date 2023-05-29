@@ -1,25 +1,24 @@
-import {
-  createRouter,
-  createWebHashHistory,
-} from "vue-router";
+import { createWebHashHistory, createRouter } from "vue-router";
 
-import PageOne from "@/pages/PageOne.vue";
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: [
+    {
+      path: "/",
+      redirect: "/songlist",
+      component: () => import("@/pages/Main/Main.vue"),
+      children: [
+        {
+          path: "songlist",
+          component: () => import("@/pages/SongList/SongList.vue"),
+        },
+        {
+          path: "playDetail",
+          component: () => import("@/pages/PlayDetail/PlayDetail.vue"),
+        },
+      ],
+    },
+  ],
+});
 
-export default () => {
-  const router = createRouter({
-    history: createWebHashHistory(),
-    routes: [
-      { path: "/", component: PageOne },
-      {
-        path: "/page-two",
-        component: () => import("@/pages/PageTwo.vue"),
-      },
-    ],
-  });
-
-  // 全局导航守卫
-  router.beforeEach((to, from) => {
-    return true
-  });
-  return router;
-};
+export default router;

@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/renderer1/*"]
+      "@/*": ["src/renderer/*"]
     }
   },
   "include": [
@@ -22,6 +22,6 @@
     "src/**/*.d.ts",
     "src/**/*.vue",
     "src/**/*.json",
-    "vite-env.d.ts",
+    "vite-env.d.ts"
   ]
 }

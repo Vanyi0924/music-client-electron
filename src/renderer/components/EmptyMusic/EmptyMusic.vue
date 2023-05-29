@@ -1,10 +1,13 @@
 <template>
-  <router-view></router-view>
+  <div>
+    
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import axios from "axios";
+
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+</style>

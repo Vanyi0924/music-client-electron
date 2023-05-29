@@ -1,8 +1,8 @@
 export default () => {
   const browserWindowSize = {
-    minWidth: 1120,
-    height: 750,
-    minHeight: 750,
+    minWidth: 1000,
+    height: 670,
+    minHeight: 670,
   };
 
   return {

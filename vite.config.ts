@@ -8,14 +8,19 @@ const root = resolve(process.cwd());
 // @ts-ignore
 export default defineConfig(({ command, mode, ssrBuild }) => {
   return {
-    plugins: [
-      vue(),
-    ],
+    plugins: [vue()],
     root,
     base: "",
     resolve: {
       alias: {
         "@": resolve(root, "src/renderer"),
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true,
+        },
       },
     },
     build: {
