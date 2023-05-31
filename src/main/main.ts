@@ -1,12 +1,8 @@
 import { app, BrowserWindow, ipcMain, Menu } from "electron";
 import { resolve } from "path";
-import initDB from "./database";
 import { createDebugLogger, debugLogger } from "./logs";
 import electronConfig from "../../electron-vue.config";
-import workerpool from "workerpool";
-import { FOO } from "../constants";
-// import { autoUpdater } from "electron-updater";
-// import emitter from "./mitt";
+
 /**
  * @description 注入环境变量
  * process.env[attr] 值只能为字符串
@@ -22,21 +18,10 @@ const { browserWindowSize, loadURL } = app.isPackaged ? main.prod : main.dev;
 // 初始化日志实例
 createDebugLogger();
 // 初始化数据库
-initDB();
 debugLogger.info("启动客户端");
-debugLogger.info("FOO", FOO);
-
 // 载入配置 end
 
 const isMac = process.platform === "darwin";
-
-// const poolInstants = workerpool.pool(
-//   resolve(__dirname, "./worker/index.js")
-// );
-
-// poolInstants.exec("say", []).then(result => {
-//   console.log("result", result);
-// })
 
 let win: BrowserWindow;
 const createWindow = async () => {
@@ -74,14 +59,6 @@ app
   });
 
 /**
- * 发布 - 订阅 设置菜单
- */
-ipcMain.handle("from-renderer", (evt, payload) => {
-  win.webContents.send("from-main", "[main]" + payload);
-  return "[main] hi vue3";
-});
-
-/**
  * 设置菜单
  */
 // https://www.electronjs.org/zh/docs/latest/api/menu#examples
@@ -101,4 +78,5 @@ const menu = Menu.buildFromTemplate([
     ],
   },
 ]);
+
 Menu.setApplicationMenu(menu);

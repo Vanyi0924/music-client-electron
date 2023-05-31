@@ -3,8 +3,8 @@
     class="player-bar relative flex h-20 items-center justify-center bg-app-dark-color-300 text-white"
   >
     <ProgressBar
-      class="song-progress-bar absolute top-0"
       v-model:process="process"
+      class="song-progress-bar absolute top-0"
     />
     <div class="song-detail absolute left-1">
       <div class="thumbnail group flex items-center justify-center">
@@ -53,8 +53,6 @@
         <BackwardStepIcon />
       </m-icon>
       <div class="play-pause relative mx-4 flex items-center justify-center">
-        <div class="absolute -z-10 h-1/2 w-1/2 bg-white"></div>
-
         <m-icon
           v-show="!appStore.isPlaying"
           :width="40"
@@ -76,7 +74,9 @@
       </m-icon>
     </div>
 
-    <div class="opt-area absolute right-8 flex items-center fill-white">
+    <div
+      class="opt-area absolute right-8 flex items-center text-app-base-color"
+    >
       <m-icon
         class="mr-4"
         :width="24"
@@ -87,7 +87,7 @@
       <m-icon :width="20" @click="() => appStore.setPlayModel()">
         <LoopListIcon v-if="appStore.playModel === PlayModel.list" />
         <LoopRandomIcon v-else-if="appStore.playModel === PlayModel.random" />
-        <LoopSingleIcon v-else="appStore.playModel === PlayModel.loop" />
+        <LoopSingleIcon v-else />
       </m-icon>
     </div>
     <!-- 播放列表 -->
@@ -122,7 +122,7 @@ import {
   nextSongIndex,
   number2Time,
 } from "@/utils";
-import { computed, ref } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import ProgressBar from "../ProgressBar/ProgressBar.vue";
 import VolumeLowIcon from "@/assets/icons/vue/VolumeLow.vue";
 import ForwardStepIcon from "@/assets/icons/vue/ForwardStep.vue";
@@ -139,7 +139,6 @@ import LoopSingleIcon from "@/assets/icons/vue/LoopSingle.vue";
 import router from "@/router";
 import CommonSongList from "../biz/CommonSongList.vue";
 import { useClickIsOutside } from "@/hooks";
-import { onMounted, watch } from "vue";
 
 interface Props {
   songDetail?: SongDetail;
