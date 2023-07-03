@@ -14,6 +14,8 @@ interface SongDetail {
   name: string;
   singerName: string;
   albumName: string;
+  albumId: number;
+  duration: number;
   url: string;
   lyric: { lyric: string; time: string }[];
 }
@@ -60,6 +62,14 @@ interface PerLyric {
 }
 
 interface SonglistRes {
-  rows: SongDetail[];
+  records: Songlist[];
   total: number;
+}
+
+// 歌单
+interface Songlist {
+  description: string;
+  id: number;
+  cover?: string;
+  updatedAt: string;
 }

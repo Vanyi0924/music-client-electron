@@ -1,15 +1,13 @@
 import axios, { AxiosInstance } from "axios";
+import { http } from "./music-axios";
 
-const baseDomain = "http://rb.vanyi.top:10926";
+const baseDomain = "http://127.0.0.1:8081/api";
+// const baseDomain = "http://rb.vanyi.top:10926";
 
-export const baseURL = `${baseDomain}/api/music`;
+export const baseURL = `${baseDomain}`;
 export const SSObaseURL = `${baseDomain}/api/music/static`;
-// export const baseURLAI = `http://127.0.0.1:10933/api`;
-export const baseURLAI = `${baseDomain}/api/ai`;
-
-const http = axios.create({
-  baseURL,
-});
+export const baseURLAI = `http://127.0.0.1:10933/api`;
+// export const baseURLAI = `${baseDomain}/api/ai`;
 
 const httpAI = axios.create({
   baseURL: baseURLAI,
@@ -30,7 +28,6 @@ const responseInterceptor = (http: AxiosInstance) => {
   );
 };
 
-responseInterceptor(http);
 responseInterceptor(httpAI);
 
 interface BizResponse<T = any> {
@@ -51,20 +48,21 @@ export const apiSongSearch = (params: { keywords: string }) =>
 
 export const apiPlaylist = () => http.get("/playlist");
 
-export const getSonglistApi = (params?: {
-  keywords?: string;
+/**
+ * @description: 分页 获取歌单
+ */
+export const getSonglistPage = (params?: {
   pageNo?: number;
   pageSize?: number;
 }) =>
-  http.get<any, BizResponse<SonglistRes>>("/song/list", {
+  http.get<SonglistRes>("/songlist/page-query", {
     params,
   });
 
-export const getAlbumDetailApi = (name: string, singerName: string) =>
+export const getAlbumDetailApi = (id: number) =>
   http.get<any, BizResponse<AlbumDetail>>("/album/detail", {
     params: {
-      name,
-      singerName,
+      id,
     },
   });
 
@@ -92,5 +90,13 @@ export const getSongDetailByNameApi = (params: {
   songName: string;
 }) =>
   http.get<any, BizResponse<any>>(`/song/detailByName`, {
+    params,
+  });
+
+/**
+ * @description: 获取歌单下所有歌曲
+ */
+export const getSonglistSongs = (params: { songlistId: number }) =>
+  http.get<any, BizResponse<SongDetail[]>>(`/songlist/songs`, {
     params,
   });

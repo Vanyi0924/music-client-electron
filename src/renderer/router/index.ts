@@ -5,12 +5,16 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/songlist",
+      // redirect: "/songlist",
       component: () => import("@/pages/Main/Main.vue"),
       children: [
         {
           path: "songlist",
-          component: () => import("@/pages/SongList/SongList.vue"),
+          component: () => import("@/pages/Songlist/Songlist.vue"),
+        },
+        {
+          path: "songlist/detail",
+          component: () => import("@/pages/Songlist/SonglistDetail.vue"),
         },
         {
           path: "playDetail",

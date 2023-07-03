@@ -9,7 +9,7 @@ export default () => {
     main: {
       dev: {
         browserWindowSize,
-        loadURL: "http://127.0.0.1:5173/",
+        loadURL: "http://127.0.0.1:9024/",
       },
       prod: {
         browserWindowSize,

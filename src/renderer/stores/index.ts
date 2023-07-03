@@ -17,11 +17,12 @@ interface AppState {
   songDetail?: SongDetail;
   albumDetail?: AlbumDetail;
   songDetailMap?: Map<string, AlbumDetail>;
-  albumDetailMap: Map<string, AlbumDetail>;
+  albumDetailMap: Map<number, AlbumDetail>;
   playlist: SongDetail[];
   showPlaylist: boolean;
   playModel: PlayModel;
   startPlayTs: number;
+  curSonglist?: Songlist;
 }
 
 export const useAppStore = defineStore("app", {
@@ -48,9 +49,7 @@ export const useAppStore = defineStore("app", {
   },
   getters: {
     songDetailURL: (state) =>
-      state.songDetail?.url
-        ? `${SSObaseURL}${state.songDetail?.url}`
-        : undefined,
+      state.songDetail?.url ? state.songDetail?.url : undefined,
   },
   actions: {
     /**
@@ -115,22 +114,21 @@ export const useAppStore = defineStore("app", {
     async handlePlay(song: SongDetail) {
       this.songDetail = song;
       this.startPlayTs = Date.now();
-      await this.getAlbumDetail(song.albumName, song.singerName);
+      await this.getAlbumDetail(song.albumId);
       // 存入播放列表
       if (!this.isExistInPlaylist(song)) {
         this.playlist.push(song);
         localStorage.setItem(PLAYLIST, JSON.stringify(this.playlist));
       }
     },
-    async getAlbumDetail(name: string, singerName: string) {
-      this.albumDetail = this.albumDetailMap.get(`${name}${singerName}`);
+    async getAlbumDetail(id: number) {
+      this.albumDetail = this.albumDetailMap.get(id);
       if (this.albumDetail) {
         return;
       }
-      const { data } = await getAlbumDetailApi(name, singerName);
+      const { data } = await getAlbumDetailApi(id);
       this.albumDetail = data;
-      this.albumDetail.picUrl = `${SSObaseURL}${this.albumDetail.picUrl}`;
-      this.albumDetailMap.set(`${name}${singerName}`, data);
+      this.albumDetailMap.set(id, data);
     },
   },
 });

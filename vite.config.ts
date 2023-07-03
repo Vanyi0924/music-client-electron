@@ -11,6 +11,9 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     plugins: [vue()],
     root,
     base: "",
+    server: {
+      port: 9024,
+    },
     resolve: {
       alias: {
         "@": resolve(root, "src/renderer"),

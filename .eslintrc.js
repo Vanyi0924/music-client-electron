@@ -32,5 +32,6 @@ module.exports = {
     "no-unused-vars": [1],
     "comma-dangle": [0],
     "no-undef": [0],
+    "vue/multi-word-component-names": [0],
   },
 };
