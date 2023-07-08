@@ -30,6 +30,7 @@ import { api } from "@/api";
 import { useRoute } from "vue-router";
 import { useAppStore } from "@/stores";
 import CommonSongList from "@/components/biz/CommonSongList.vue";
+import { Api } from "@music/common";
 
 const route = useRoute();
 
@@ -40,7 +41,7 @@ const curSonglist = computed(() => appStore.curSonglist);
 const songs = ref<SongDetail[]>([]);
 
 const getSongs = async () => {
-  const { data } = await api.getSonglistSongs({
+  const { data } = await Api.getSonglistSongs({
     songlistId: Number(route.query.id),
   });
 

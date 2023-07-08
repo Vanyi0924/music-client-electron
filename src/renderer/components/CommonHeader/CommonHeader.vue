@@ -56,19 +56,17 @@ import { apiSongSearch } from "../../api/http";
 import ArrowDropDownRoundIcon from "@/assets/icons/vue/ArrowDropDownRound.vue";
 import SearchIcon from "@/assets/icons/vue/Search.vue";
 import CloseIcon from "@/assets/icons/vue/Close.vue";
+import { Api } from "@music/common";
 
 const emit = defineEmits(["searchSongStart", "searchSong"]);
 
 const searchSong = async (pageNo = 1) => {
-  // if (!appStore.keywords.trim().length) {
-  //   return;
-  // }
-  // emit("searchSongStart");
-  // const { data } = await getSonglistApi({
-  //   keywords: appStore.keywords.trim(),
-  //   pageNo,
-  // });
-  // emit("searchSong", data);
+  if (!appStore.keywords.trim().length) {
+    return;
+  }
+  emit("searchSongStart");
+  const { data } = await Api.searchSongs(appStore.keywords.trim(), pageNo);
+  emit("searchSong", data);
 };
 
 const appStore = useAppStore();

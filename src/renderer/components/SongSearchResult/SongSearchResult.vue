@@ -12,11 +12,12 @@
         个结果
       </p>
       <!-- 已拥有列表 -->
-      <CommonSongList :list="searchSongRes?.rows" />
+      <CommonSongList :list="searchSongRes?.records" />
 
       <div class="my-4 flex justify-end pr-4">
         <a-pagination
           size="small"
+          :showSizeChanger="false"
           :total="searchSongRes?.total"
           @change="onHadSongsPageChange"
         />
@@ -55,7 +56,7 @@
       <ul class="section-item">
         <li
           class="section-item-list relative flex cursor-pointer py-2 pl-7 text-xs even:bg-app-dark-color-400/50 hover:text-white"
-          v-for="song in aiSearchSongRes?.rows"
+          v-for="song in aiSearchSongRes?.records"
           @dblclick="handleAISearch(song)"
         >
           <m-icon
@@ -93,7 +94,7 @@
       </div>
     </div>
     <p
-      v-if="!searchSongRes?.rows.length && !aiSearchSongRes?.total"
+      v-if="!searchSongRes?.records.length && !aiSearchSongRes?.total"
       class="mt-4 text-center text-xs opacity-75"
     >
       输入关键字，Enter 键进行搜索...
@@ -114,7 +115,7 @@ interface Props {
   modelValue: boolean;
   searchSongRes?: SonglistRes;
   aiSearchSongRes?: {
-    rows: AISongDetail[];
+    records: AISongDetail[];
     total: number;
   };
 }

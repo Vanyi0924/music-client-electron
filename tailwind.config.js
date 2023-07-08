@@ -4,8 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        "app-base-color": "#39bc5b",
-        "app-sub-color": "#fffd54",
+        "app-base-color": "#00fa9a",
+        // "app-base-color": "#00ff7f",
+        "app-sub-color": "#00fa9a",
         "app-dark-color-100": "#202020", // aside bg
         "app-dark-color-200": "#252525", // body bg
         "app-dark-color-300": "#2b2b2b", // header bg

@@ -1,7 +1,8 @@
-import { getAlbumDetailApi, SSObaseURL } from "@/api/http";
+import { Api } from "@music/common";
 import { PLAYLIST } from "@/config/constants";
 import { nextSongIndex, PlayModel, SwitchSongDirection } from "@/utils";
 import { defineStore } from "pinia";
+import { Songlist } from "@music/common/types/typings";
 
 // 你可以对 `defineStore()` 的返回值进行任意命名，但最好使用 store 的名字，同时以 `use` 开头且以 `Store` 结尾。(比如 `useUserStore`，`useCartStore`，`useProductStore`)
 // 第一个参数是你的应用中 Store 的唯一 ID。
@@ -126,7 +127,7 @@ export const useAppStore = defineStore("app", {
       if (this.albumDetail) {
         return;
       }
-      const { data } = await getAlbumDetailApi(id);
+      const { data } = await Api.getAlbumDetailApi(id);
       this.albumDetail = data;
       this.albumDetailMap.set(id, data);
     },

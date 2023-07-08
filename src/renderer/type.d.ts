@@ -65,11 +65,3 @@ interface SonglistRes {
   records: Songlist[];
   total: number;
 }
-
-// 歌单
-interface Songlist {
-  description: string;
-  id: number;
-  cover?: string;
-  updatedAt: string;
-}

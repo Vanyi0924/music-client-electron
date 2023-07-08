@@ -59,13 +59,6 @@ export const getSonglistPage = (params?: {
     params,
   });
 
-export const getAlbumDetailApi = (id: number) =>
-  http.get<any, BizResponse<AlbumDetail>>("/album/detail", {
-    params: {
-      id,
-    },
-  });
-
 export interface AISearchRes {
   total: number;
   rows: AISongDetail[];
@@ -90,13 +83,5 @@ export const getSongDetailByNameApi = (params: {
   songName: string;
 }) =>
   http.get<any, BizResponse<any>>(`/song/detailByName`, {
-    params,
-  });
-
-/**
- * @description: 获取歌单下所有歌曲
- */
-export const getSonglistSongs = (params: { songlistId: number }) =>
-  http.get<any, BizResponse<SongDetail[]>>(`/songlist/songs`, {
     params,
   });

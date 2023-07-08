@@ -12,20 +12,22 @@
 </template>
 
 <script setup lang="ts">
-import { api } from "@/api";
+import { Api } from "@music/common";
 import { useAppStore } from "@/stores";
 import { onMounted, ref } from "vue";
 import PlayIcon from "@/assets/icons/vue/Play.vue";
 import PauseRoundIcon from "@/assets/icons/vue/PauseRound.vue";
 import { query } from "winston";
 import { useRouter } from "vue-router";
+import { MultipleCascaderProps } from "ant-design-vue/lib/vc-cascader/Cascader";
+import { Songlist } from "@music/common/types/typings";
 
 const appStore = useAppStore();
 
 const songlist = ref<Songlist[]>([]);
 
 const getSonglist = async () => {
-  const { data } = await api.getSonglistPage();
+  const { data } = await Api.getSonglistPage();
   songlist.value = data.records.map((r) => {
     return r;
   });
