@@ -8,6 +8,11 @@ import MIcon from "./components/MIcon/MIcon.vue";
 import CommonHeader from "./components/CommonHeader/CommonHeader.vue";
 import router from "./router";
 import Antd from "ant-design-vue";
+import { Api } from "@music/common";
+
+Api.initHttp({
+  baseURL: "http://rb.vanyi.top:10935/api",
+});
 
 const app = createApp(App);
 const pinia = createPinia();

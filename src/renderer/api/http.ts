@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { http } from "./music-axios";
+import { Api } from "@music/common";
 
 const baseDomain = "http://127.0.0.1:8081/api";
 // const baseDomain = "http://rb.vanyi.top:10926";
