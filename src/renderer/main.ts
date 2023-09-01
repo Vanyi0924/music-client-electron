@@ -11,7 +11,7 @@ import Antd from "ant-design-vue";
 import { Api } from "@music/common";
 
 Api.initHttp({
-  baseURL: "http://rb.vanyi.top:10935/api",
+  baseURL: "https://music.vanyi.top/api",
 });
 
 const app = createApp(App);

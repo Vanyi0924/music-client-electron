@@ -3,7 +3,13 @@
     data-tauri-drag-region
     class="app-drag sticky left-0 top-0 z-50 flex h-16 w-full flex-shrink-0 items-center justify-end bg-app-dark-color-200 text-sm"
   >
-    <button class="mr-4 text-white" @click="$router.back()">返回</button>
+    <button
+      v-if="$route.path !== `/songlist`"
+      class="mr-4 text-white"
+      @click="$router.back()"
+    >
+      返回
+    </button>
     <div
       v-if="$route.path === `/playDetail`"
       class="absolute left-20 text-white"
@@ -52,7 +58,6 @@
 <script setup lang="ts">
 import { useAppStore } from "@/stores";
 import { ref } from "vue";
-import { apiSongSearch } from "../../api/http";
 import ArrowDropDownRoundIcon from "@/assets/icons/vue/ArrowDropDownRound.vue";
 import SearchIcon from "@/assets/icons/vue/Search.vue";
 import CloseIcon from "@/assets/icons/vue/Close.vue";
@@ -65,6 +70,7 @@ const searchSong = async (pageNo = 1) => {
     return;
   }
   emit("searchSongStart");
+  appStore.currentPage = pageNo;
   const { data } = await Api.searchSongs(appStore.keywords.trim(), pageNo);
   emit("searchSong", data);
 };

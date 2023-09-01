@@ -61,7 +61,7 @@
     "vue-tsc": "^1.0.24"
   },
   "build": {
-    "appId": "top.vanyi.ld",
+    "appId": "top.vanyi.music",
     "productName": "律动音乐",
     "extraResources": [
       {

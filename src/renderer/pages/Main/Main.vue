@@ -9,7 +9,6 @@
     <SongSearchResult
       v-model="appStore.songSearchResultVisible"
       :search-song-res="searchSongRes"
-      :ai-search-song-res="aiSearchResult"
       @page-change="handlePageChange"
       @ai-search="handleAISearch"
       @ai-search-end="handleAiSearchEnd"
@@ -41,7 +40,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { AISearchRes, apiSongDetail, getAISearchApi } from "@/api/http";
 import PlayerBar from "@/components/PlayerBar/PlayerBar.vue";
 import SongSearchResult from "@/components/SongSearchResult/SongSearchResult.vue";
 import { useAppStore } from "@/stores";
@@ -112,10 +110,10 @@ const onEnded = () => {
   appStore.playNextSong();
 };
 
-const aiSearchResult = ref<AISearchRes>();
+// const aiSearchResult = ref<AISearchRes>();
 const handleAISearch = async (pageNo = 1) => {
-  const { data } = await getAISearchApi(appStore.keywords, pageNo);
-  aiSearchResult.value = data;
+  // const { data } = await getAISearchApi(appStore.keywords, pageNo);
+  // aiSearchResult.value = data;
 };
 
 const handleAiSearchEnd = () => {

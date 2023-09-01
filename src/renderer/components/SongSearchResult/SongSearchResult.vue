@@ -16,6 +16,7 @@
 
       <div class="my-4 flex justify-end pr-4">
         <a-pagination
+          v-model:current="appStore.currentPage"
           size="small"
           :showSizeChanger="false"
           :total="searchSongRes?.total"
@@ -23,7 +24,7 @@
         />
       </div>
     </div>
-    <p
+    <!-- <p
       v-show="searchSongRes"
       class="my-4 text-center text-xs"
       @click="$emit(`aiSearch`)"
@@ -34,7 +35,7 @@
       >
         搜索
       </span>
-    </p>
+    </p> -->
     <div v-if="aiSearchSongRes?.total">
       <div class="flex items-center justify-between pl-6">
         <div v-if="isSearching" class="flex items-center text-xs opacity-50">
@@ -103,7 +104,6 @@
 </template>
 
 <script setup lang="ts">
-import { getAISongDetailApi, getSongDetailByNameApi } from "@/api/http";
 import DownloadDoneRoundIcon from "@/assets/icons/vue/DownloadDoneRound.vue";
 import CloudDownloadOutlinedIcon from "@/assets/icons/vue/CloudDownloadOutlined.vue";
 import { useAppStore } from "@/stores";
@@ -153,7 +153,7 @@ onUnmounted(() => {
 });
 const isSearching = ref(false);
 const handleAISearch = async (song: AISongDetail) => {
-  if (song.is_in_database) {
+  /*   if (song.is_in_database) {
     const { data } = await getSongDetailByNameApi({
       artistName: song.singer_name,
       albumName: song.album_name,
@@ -172,7 +172,7 @@ const handleAISearch = async (song: AISongDetail) => {
   await getAISongDetailApi(song.id);
   isSearching.value = false;
   song.is_in_database = true;
-  emit("aiSearchEnd");
+  emit("aiSearchEnd"); */
 };
 
 const onHadSongsPageChange = (page: number, pageSize: number) => {

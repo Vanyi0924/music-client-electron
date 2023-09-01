@@ -24,6 +24,7 @@ interface AppState {
   playModel: PlayModel;
   startPlayTs: number;
   curSonglist?: Songlist;
+  currentPage: number;
 }
 
 export const useAppStore = defineStore("app", {
@@ -46,6 +47,7 @@ export const useAppStore = defineStore("app", {
       showPlaylist: false,
       playModel: PlayModel.loop,
       startPlayTs: Date.now(),
+      currentPage: 1,
     };
   },
   getters: {
