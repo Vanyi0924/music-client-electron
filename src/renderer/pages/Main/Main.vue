@@ -1,21 +1,21 @@
 <template>
-  <main class="flex h-full flex-col bg-app-dark-color-200 text-gray-950">
+  <main class="flex flex-col bg-app-dark-color-200 text-gray-950">
     <CommonHeader
       ref="commonHeaderRef"
       @search-song-start="appStore.songSearchResultVisible = true"
       @search-song="onSearchSong"
-    />
-
-    <SongSearchResult
-      v-model="appStore.songSearchResultVisible"
-      :search-song-res="searchSongRes"
-      @page-change="handlePageChange"
-      @ai-search="handleAISearch"
-      @ai-search-end="handleAiSearchEnd"
-    />
+    >
+      <SongSearchResult
+        v-model="appStore.songSearchResultVisible"
+        :search-song-res="searchSongRes"
+        @page-change="handlePageChange"
+        @ai-search="handleAISearch"
+        @ai-search-end="handleAiSearchEnd"
+      />
+    </CommonHeader>
 
     <!-- VIEW -->
-    <div class="h-0 flex-auto overflow-auto">
+    <div class="limit-width mx-auto my-5 min-h-[100vh]">
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />

@@ -32,8 +32,8 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
         plugins: [
           terser({
             compress: {
-              // drop_console: true,
-              // drop_debugger: true,
+              drop_console: true,
+              drop_debugger: true,
             },
           }),
         ],

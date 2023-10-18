@@ -1,95 +1,103 @@
 <template>
   <div
-    class="player-bar relative flex h-20 items-center justify-center bg-app-dark-color-300 text-white"
+    class="player-bar common-height relative flex justify-center bg-app-dark-color-300 text-white"
   >
+    <!-- 进度条 -->
     <ProgressBar
       v-model:process="process"
       class="song-progress-bar absolute top-0"
     />
-    <div class="song-detail absolute left-1">
-      <div class="thumbnail group flex items-center justify-center">
-        <div v-if="appStore?.albumDetail" class="relative">
-          <img :src="appStore?.albumDetail.picUrl" />
+
+    <div class="limit-width relative flex items-center justify-center">
+      <!-- 歌曲信息 -->
+      <div class="song-detail absolute left-0">
+        <div class="thumbnail group flex items-center justify-center">
+          <div v-if="appStore?.albumDetail" class="relative">
+            <img :src="appStore?.albumDetail.picUrl" />
+
+            <div
+              v-if="$route.path !== `/playDetail`"
+              class="mask absolute left-0 top-0 hidden h-full w-full cursor-pointer items-center justify-center bg-black/60 backdrop-blur-sm group-hover:flex"
+              @click="showPlayerDetail"
+            >
+              <m-icon :width="24" class="-rotate-45 opacity-60">
+                <ArrowIcon />
+              </m-icon>
+            </div>
+          </div>
 
           <div
-            v-if="$route.path !== `/playDetail`"
-            class="mask absolute left-0 top-0 hidden h-full w-full cursor-pointer items-center justify-center bg-black/60 backdrop-blur-sm group-hover:flex"
-            @click="showPlayerDetail"
+            v-else
+            class="flex h-full w-full items-center justify-center bg-app-base-color text-white"
           >
-            <m-icon :width="24" class="-rotate-45 opacity-60">
-              <ArrowIcon />
-            </m-icon>
+            <MIcon>
+              <MusicIcon />
+            </MIcon>
           </div>
         </div>
-
-        <div
-          v-else
-          class="flex h-full w-full items-center justify-center bg-app-base-color text-white"
-        >
-          <MIcon>
-            <MusicIcon />
-          </MIcon>
+        <div class="song-name">
+          <div v-if="songDetail">
+            <span>{{ songDetail?.name }}</span>
+            <span class="singer text-xs opacity-50">
+              -
+              <em>{{ songDetail?.singerName }}</em>
+            </span>
+          </div>
+          <div v-else>请选择歌曲</div>
+        </div>
+        <div class="song-time text-xs opacity-50">
+          {{ number2Time(appStore.playingTimestamp) }} /
+          {{ number2Time(appStore.songDuration) }}
         </div>
       </div>
-      <div class="song-name">
-        <div v-if="songDetail">
-          <span>{{ songDetail?.name }}</span>
-          <span class="singer text-xs opacity-50">
-            -
-            <em>{{ songDetail?.singerName }}</em>
-          </span>
+
+      <!-- 控制 -->
+      <div class="controls flex items-center fill-app-base-color">
+        <!-- 上一曲 -->
+        <m-icon @click.stop="switchSong(SwitchSongDirection.prev)">
+          <BackwardStepIcon />
+        </m-icon>
+        <div class="play-pause relative mx-4 flex items-center justify-center">
+          <m-icon
+            v-show="!appStore.isPlaying"
+            :width="40"
+            @click="$emit(`actionPlay`)"
+          >
+            <CirclePlayIcon />
+          </m-icon>
+          <m-icon
+            v-show="appStore.isPlaying"
+            :width="40"
+            @click="$emit(`actionPlay`)"
+          >
+            <CirclePauseIcon />
+          </m-icon>
         </div>
-        <div v-else>请选择歌曲</div>
-      </div>
-      <div class="song-time text-xs opacity-50">
-        {{ number2Time(appStore.playingTimestamp) }} /
-        {{ number2Time(appStore.songDuration) }}
-      </div>
-    </div>
-
-    <div class="controls flex items-center fill-app-base-color">
-      <!-- 上一曲 -->
-      <m-icon @click.stop="switchSong(SwitchSongDirection.prev)">
-        <BackwardStepIcon />
-      </m-icon>
-      <div class="play-pause relative mx-4 flex items-center justify-center">
-        <m-icon
-          v-show="!appStore.isPlaying"
-          :width="40"
-          @click="$emit(`actionPlay`)"
-        >
-          <CirclePlayIcon />
-        </m-icon>
-        <m-icon
-          v-show="appStore.isPlaying"
-          :width="40"
-          @click="$emit(`actionPlay`)"
-        >
-          <CirclePauseIcon />
+        <!-- 下一曲 -->
+        <m-icon @click.stop="switchSong(SwitchSongDirection.next)">
+          <ForwardStepIcon />
         </m-icon>
       </div>
-      <!-- 下一曲 -->
-      <m-icon @click.stop="switchSong(SwitchSongDirection.next)">
-        <ForwardStepIcon />
-      </m-icon>
-    </div>
 
-    <div
-      class="opt-area absolute right-8 flex items-center text-app-base-color"
-    >
-      <m-icon
-        class="mr-4"
-        :width="24"
-        @click.stop="appStore.showPlaylist = true"
+      <!-- 操作区域 播放列表 | 循环策略等 -->
+      <div
+        class="opt-area absolute right-0 flex items-center text-app-base-color"
       >
-        <MenuIcon />
-      </m-icon>
-      <m-icon :width="20" @click="() => appStore.setPlayModel()">
-        <LoopListIcon v-if="appStore.playModel === PlayModel.list" />
-        <LoopRandomIcon v-else-if="appStore.playModel === PlayModel.random" />
-        <LoopSingleIcon v-else />
-      </m-icon>
+        <m-icon
+          class="mr-4"
+          :width="24"
+          @click.stop="appStore.showPlaylist = true"
+        >
+          <MenuIcon />
+        </m-icon>
+        <m-icon :width="20" @click="() => appStore.setPlayModel()">
+          <LoopListIcon v-if="appStore.playModel === PlayModel.list" />
+          <LoopRandomIcon v-else-if="appStore.playModel === PlayModel.random" />
+          <LoopSingleIcon v-else />
+        </m-icon>
+      </div>
     </div>
+
     <!-- 播放列表 -->
     <div
       v-show="appStore.showPlaylist"
@@ -195,7 +203,6 @@ const switchSong = (dir: SwitchSongDirection) => {
   display: grid;
   grid-template-columns: 52px max(240px);
   grid-template-rows: 50% 50%;
-  margin-left: 24px;
   gap: 0 10px;
   align-items: center;
 }

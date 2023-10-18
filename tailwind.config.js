@@ -4,15 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        "app-base-color": "#32ccbc",
-        "app-sub-color": "#32ccbc",
-        "app-dark-color-100": "#202020", // aside bg
-        "app-dark-color-200": "#252525", // body bg
-        "app-dark-color-300": "#2b2b2b", // header bg
-        "app-dark-color-400": "#363636", // list deep
-        "app-dark-color-500": "#3a3a3a", // list shallow
+        "app-base-color": "var(--app-base-color)",
+        "app-sub-color": "var(--app-base-color)",
+
+        "app-dark-color-100": "var(--app-dark-color-100)", // aside bg
+        "app-dark-color-200": "var(--app-dark-color-200)", // aside bg
+        "app-dark-color-300": "var(--app-dark-color-300)", // aside bg
+        "app-dark-color-400": "var(--app-dark-color-400)", // aside bg
+        "app-dark-color-500": "var(--app-dark-color-500)", // aside bg
       },
       height: {
+        // header: "var(--app-header-height)",
+        // noHeader: "calc(100vh - var(--app-header-height))",
         // 999: "50px",
       },
       width: {

@@ -7,6 +7,7 @@
   "description": "律动音乐",
   "scripts": {
     "dev": "node scripts/load-config.mjs && npm run build:main:dev && node scripts/dev.mjs",
+    "web": "vite",
     "build": "node scripts/load-config.mjs && npm run build:main:prod && npm run build:renderer && npm run build:electron",
     "build:renderer": "vite build",
     "build:main:dev": "cross-env NODE_ENV=development node scripts/build-main.mjs",

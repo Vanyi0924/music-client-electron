@@ -1,13 +1,31 @@
 <template>
   <div class="song-list">
-    <ul class="flex flex-wrap px-6">
-      <li v-for="sl in songlist" :key="sl.id" @click="gotoDetail(sl)">
-        <img class="rounded" :src="sl.cover" alt="" />
-        <p class="text text-md m-1 break-words text-white">
-          {{ sl.description }}
-        </p>
-      </li>
-    </ul>
+    <!-- <div
+      class="loading absolute left-0 top-0 flex h-full w-full items-center justify-center bg-app-dark-color-200"
+    > -->
+    <a-spin :spinning="spinning" :delay="200">
+      <ul class="list flex flex-wrap">
+        <li
+          v-for="sl in songlist"
+          :key="sl.id"
+          class="cursor-pointer"
+          @click="gotoDetail(sl)"
+        >
+          <a-image
+            class="rounded-2xl"
+            :preview="false"
+            :src="sl.cover"
+            :placeholder="true"
+            :alt="sl.description"
+          />
+
+          <p class="text text-md m-1 break-words text-white">
+            {{ sl.description }}
+          </p>
+        </li>
+      </ul>
+    </a-spin>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -15,19 +33,23 @@
 import { Api } from "@music/common";
 import { useAppStore } from "@/stores";
 import { onMounted, ref } from "vue";
-import PlayIcon from "@/assets/icons/vue/Play.vue";
-import PauseRoundIcon from "@/assets/icons/vue/PauseRound.vue";
-import { query } from "winston";
 import { useRouter } from "vue-router";
-import { MultipleCascaderProps } from "ant-design-vue/lib/vc-cascader/Cascader";
-import { Songlist } from "@music/common/types/typings";
+import { BizResponse, Page, Songlist } from "@music/common/types/typings";
+import { withCache } from "@/utils/app-cache";
 
 const appStore = useAppStore();
 
 const songlist = ref<Songlist[]>([]);
 
+const spinning = ref(false);
+
 const getSonglist = async () => {
-  const { data } = await Api.getSonglistPage();
+  spinning.value = true;
+  const { data } = await withCache<ReturnType<typeof Api.getSonglistPage>>(
+    Api.getSonglistPage
+  );
+  spinning.value = false;
+
   songlist.value = data.records.map((r) => {
     return r;
   });
@@ -50,13 +72,10 @@ const gotoDetail = (songlist: Songlist) => {
 </script>
 
 <style lang="less" scoped>
-.song-list {
-  > ul {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 24px;
-    > li {
-    }
-  }
+.list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  min-height: 100vh;
 }
 </style>

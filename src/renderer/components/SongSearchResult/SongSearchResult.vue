@@ -1,8 +1,7 @@
 <template>
   <section
     v-show="modelValue"
-    class="fixed right-0 top-16 z-50 w-[420px] select-none overflow-auto bg-app-dark-color-300/75 py-4 text-white/75 shadow-md backdrop-blur-md"
-    style="height: calc(100% - 64px)"
+    class="bg-app-dark-color-300/75 search-result-height top-common-height absolute right-0 z-50 w-[420px] select-none overflow-auto py-4 text-white/75 shadow-md backdrop-blur-md"
     ref="songSearchResultRef"
   >
     <div v-if="searchSongRes?.total">
@@ -56,7 +55,7 @@
       <!-- ai搜索列表 -->
       <ul class="section-item">
         <li
-          class="section-item-list relative flex cursor-pointer py-2 pl-7 text-xs even:bg-app-dark-color-400/50 hover:text-white"
+          class="section-item-list even:bg-app-dark-color-400/50 relative flex cursor-pointer py-2 pl-7 text-xs hover:text-white"
           v-for="song in aiSearchSongRes?.records"
           @dblclick="handleAISearch(song)"
         >

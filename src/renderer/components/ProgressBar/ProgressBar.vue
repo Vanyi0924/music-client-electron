@@ -33,7 +33,7 @@ const progressBarRef = ref<HTMLElement>();
 watch(
   () => progressBarRef.value?.offsetWidth,
   (newVal) => {
-    console.log(newVal);
+    // console.log(newVal);
   }
 );
 

@@ -1,56 +1,73 @@
 <template>
   <header
-    data-tauri-drag-region
-    class="app-drag sticky left-0 top-0 z-50 flex h-16 w-full flex-shrink-0 items-center justify-end bg-app-dark-color-200 text-sm"
+    class="app-drag sticky left-0 top-0 z-50 flex w-full flex-shrink-0 text-sm backdrop-blur-sm"
   >
-    <button
-      v-if="$route.path !== `/songlist`"
-      class="mr-4 text-white"
-      @click="$router.back()"
-    >
-      返回
-    </button>
+    <!-- 内容区域 -->
     <div
-      v-if="$route.path === `/playDetail`"
-      class="absolute left-20 text-white"
+      class="app-header-height limit-width relative mx-auto flex items-center justify-between"
     >
-      <m-icon
-        :width="24"
-        class="cursor-pointer opacity-75"
-        @click="$router.push(`/songlist`)"
+      <!-- <button
+        v-if="$route.path !== `/songlist`"
+        class="mr-4 text-white"
+        @click="$router.back()"
       >
-        <ArrowDropDownRoundIcon />
-      </m-icon>
-    </div>
-
-    <div
-      class="search-wrapper mr-6 flex h-7 items-center rounded-2xl bg-app-dark-color-500 text-white/60 transition"
-    >
-      <m-icon class="mx-2 flex-shrink-0" :width="16">
-        <SearchIcon />
-      </m-icon>
-
-      <input
-        v-model="appStore.keywords"
-        class="w-[110px] flex-auto bg-transparent text-xs outline-none duration-300 focus:w-[130px]"
-        type="搜索"
-        placeholder="搜索"
-        @keyup.enter="() => searchSong()"
-        @focus="
-          (appStore.searchIsFocus = true),
-            (appStore.songSearchResultVisible = true)
-        "
-        @blur="appStore.searchIsFocus = false"
-      />
-
-      <m-icon
-        v-show="appStore.keywords"
-        class="mx-2 flex-shrink-0 cursor-pointer"
-        :width="16"
-        @click.stop="appStore.keywords = ``"
+        返回
+      </button>
+      <div
+        v-if="$route.path === `/playDetail`"
+        class="absolute left-20 text-white"
       >
-        <CloseIcon />
-      </m-icon>
+        <m-icon
+          :width="24"
+          class="cursor-pointer opacity-75"
+          @click="$router.push(`/songlist`)"
+        >
+          <ArrowDropDownRoundIcon />
+        </m-icon>
+      </div> -->
+      <div class="flex items-center">
+        <MusicLogo />
+        <div
+          class="opt-btn prev"
+          :class="[!appStore.routerCanBack && `disabled`]"
+          @click="appStore.routerCanBack && $router.back()"
+        >
+          <m-icon :width="18">
+            <ArrowDropDownRoundIcon />
+          </m-icon>
+        </div>
+        <div
+          class="opt-btn next"
+          :class="[!appStore.routerCanForward && `disabled`]"
+          @click="appStore.routerCanForward && $router.forward()"
+        >
+          <m-icon :width="18">
+            <ArrowDropDownRoundIcon />
+          </m-icon>
+        </div>
+      </div>
+
+      <div class="search-wrapper">
+        <a-input
+          v-model:value="appStore.keywords"
+          placeholder="搜索"
+          allow-clear
+          style="border-radius: 1rem"
+          @keyup.enter="() => searchSong()"
+          @focus="
+            (appStore.searchIsFocus = true),
+              (appStore.songSearchResultVisible = true)
+          "
+          @blur="appStore.searchIsFocus = false"
+        >
+          <template #prefix>
+            <m-icon class="mx-2 flex-shrink-0" :width="16">
+              <SearchIcon />
+            </m-icon>
+          </template>
+        </a-input>
+      </div>
+      <slot></slot>
     </div>
   </header>
 </template>
@@ -62,6 +79,7 @@ import ArrowDropDownRoundIcon from "@/assets/icons/vue/ArrowDropDownRound.vue";
 import SearchIcon from "@/assets/icons/vue/Search.vue";
 import CloseIcon from "@/assets/icons/vue/Close.vue";
 import { Api } from "@music/common";
+import MusicLogo from "@/components/MusicLogo/MusicLogo.vue";
 
 const emit = defineEmits(["searchSongStart", "searchSong"]);
 
@@ -81,3 +99,41 @@ defineExpose({
   searchSong,
 });
 </script>
+
+<style lang="less" scoped>
+@import "@/styles/variable.less";
+
+header {
+  background-color: rgba(@app-dark-color-200, 0.9);
+}
+
+.opt-btn {
+  @apply flex items-center justify-center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: @app-white-color-100;
+  // background-color: rgba(@app-white-color-100, 5);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all 0.25s;
+  &:hover {
+    background-color: rgba(@app-white-color-100, 0.2);
+  }
+  &.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    &:hover {
+      background-color: unset;
+    }
+  }
+  &.prev {
+    margin-left: 16px;
+    transform: rotate(90deg);
+  }
+  &.next {
+    margin-left: 4px;
+    transform: rotate(-90deg);
+  }
+}
+</style>

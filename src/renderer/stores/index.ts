@@ -4,9 +4,6 @@ import { nextSongIndex, PlayModel, SwitchSongDirection } from "@/utils";
 import { defineStore } from "pinia";
 import { Songlist } from "@music/common/types/typings";
 
-// 你可以对 `defineStore()` 的返回值进行任意命名，但最好使用 store 的名字，同时以 `use` 开头且以 `Store` 结尾。(比如 `useUserStore`，`useCartStore`，`useProductStore`)
-// 第一个参数是你的应用中 Store 的唯一 ID。
-
 interface AppState {
   songSearchResultVisible: boolean;
   searchIsFocus: boolean;
@@ -25,12 +22,12 @@ interface AppState {
   startPlayTs: number;
   curSonglist?: Songlist;
   currentPage: number;
+  historyState?: InstanceType<typeof window.History>["state"];
 }
 
 export const useAppStore = defineStore("app", {
   state: (): AppState => {
     const playlist = window.localStorage.getItem(PLAYLIST);
-
     return {
       songSearchResultVisible: false,
       searchIsFocus: false,
@@ -53,6 +50,8 @@ export const useAppStore = defineStore("app", {
   getters: {
     songDetailURL: (state) =>
       state.songDetail?.url ? state.songDetail?.url : undefined,
+    routerCanBack: (state) => Boolean(state.historyState?.back),
+    routerCanForward: (state) => Boolean(state.historyState?.forward),
   },
   actions: {
     /**
