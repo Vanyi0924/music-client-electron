@@ -1,6 +1,6 @@
 <template>
   <div
-    class="player-bar common-height relative flex justify-center bg-app-dark-color-300 text-white"
+    class="player-bar fixed bottom-0 left-0 flex h-common w-full justify-center bg-app-dark-color-300 text-white"
   >
     <!-- 进度条 -->
     <ProgressBar
@@ -8,7 +8,7 @@
       class="song-progress-bar absolute top-0"
     />
 
-    <div class="limit-width relative flex items-center justify-center">
+    <div class="relative flex w-limit items-center justify-center">
       <!-- 歌曲信息 -->
       <div class="song-detail absolute left-0">
         <div class="thumbnail group flex items-center justify-center">
@@ -90,11 +90,15 @@
         >
           <MenuIcon />
         </m-icon>
-        <m-icon :width="20" @click="() => appStore.setPlayModel()">
-          <LoopListIcon v-if="appStore.playModel === PlayModel.list" />
-          <LoopRandomIcon v-else-if="appStore.playModel === PlayModel.random" />
-          <LoopSingleIcon v-else />
-        </m-icon>
+
+        <a-tooltip placement="top">
+          <template #title>
+            <span>{{ curPlayModel?.label }}</span>
+          </template>
+          <m-icon :width="20" @click="() => appStore.setPlayModel()">
+            <component :is="curPlayModel?.icon"/>
+          </m-icon>
+        </a-tooltip>
       </div>
     </div>
 
@@ -102,7 +106,7 @@
     <div
       v-show="appStore.showPlaylist"
       ref="playlistEl"
-      class="fix fixed bottom-20 right-0 h-[420px] w-[420px] overflow-auto bg-app-dark-color-300/75 py-4 backdrop-blur-md"
+      class="fixed bottom-20 right-[theme(frameSize)] h-[420px] w-[420px] overflow-auto bg-app-dark-color-300/75 py-4 backdrop-blur-md"
     >
       <p class="mb-1 ml-7 opacity-75">播放列表</p>
       <CommonSongList :list="appStore.playlist">
@@ -127,6 +131,7 @@ import { useAppStore } from "@/stores";
 import {
   PlayModel,
   SwitchSongDirection,
+  getPlayModel,
   nextSongIndex,
   number2Time,
 } from "@/utils";
@@ -188,6 +193,8 @@ const removePlaylistItem = (song: SongDetail) => {
 const switchSong = (dir: SwitchSongDirection) => {
   appStore.playNextSong(dir);
 };
+
+const curPlayModel = computed(() => getPlayModel(appStore.playModel));
 </script>
 
 <style lang="css" scoped>

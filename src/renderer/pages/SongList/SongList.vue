@@ -34,8 +34,9 @@ import { Api } from "@music/common";
 import { useAppStore } from "@/stores";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { BizResponse, Page, Songlist } from "@music/common/types/typings";
+// import { BizResponse, Page, Songlist } from "@music/common/types/typings";
 import { withCache } from "@/utils/app-cache";
+import { UniqueKeys } from "@/enums/unique-keys";
 
 const appStore = useAppStore();
 
@@ -45,9 +46,10 @@ const spinning = ref(false);
 
 const getSonglist = async () => {
   spinning.value = true;
-  const { data } = await withCache<ReturnType<typeof Api.getSonglistPage>>(
-    Api.getSonglistPage
-  );
+  const { data } = await withCache<ReturnType<typeof Api.getSonglistPage>>({
+    key: UniqueKeys.SONGLIST,
+    fn: Api.getSonglistPage,
+  });
   spinning.value = false;
 
   songlist.value = data.records.map((r) => {

@@ -124,9 +124,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="css" scoped>
-/* @import "@/styles/variable.less"; */
-/* @import "@/styles/mixins.less"; */
-
 .progress-bar {
   --ball-size: 12px;
   display: flex;

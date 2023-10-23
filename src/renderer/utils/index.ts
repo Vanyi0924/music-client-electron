@@ -1,3 +1,7 @@
+import LoopListIcon from "@/assets/icons/vue/LoopList.vue";
+import LoopRandomIcon from "@/assets/icons/vue/LoopRandom.vue";
+import LoopSingleIcon from "@/assets/icons/vue/LoopSingle.vue";
+
 const newLineRE = /\n/g;
 // match [00:00:00] some words
 const lyricTimeRE = /\[[0-9:\.]+\]/;
@@ -94,6 +98,26 @@ export enum PlayModel {
   random,
 }
 
+export const getPlayModel = (model: PlayModel) => {
+  switch (model) {
+    case PlayModel.list:
+      return {
+        label: "列表循环",
+        icon: LoopListIcon,
+      };
+    case PlayModel.random:
+      return {
+        label: "随机播放",
+        icon: LoopRandomIcon,
+      };
+    case PlayModel.loop:
+      return {
+        label: "单曲循环",
+        icon: LoopSingleIcon,
+      };
+  }
+};
+
 export enum SwitchSongDirection {
   prev = -1,
   next = +1,
@@ -131,5 +155,18 @@ export const nextSongIndex = (
       }
 
       return (curIndex + optDirection) % total;
+  }
+};
+
+/**
+ * @description: json parse
+ * @param {any} data
+ */
+export const enhanceJSONParse = <T = any>(data: any): T | undefined => {
+  try {
+    return JSON.parse(data);
+  } catch (err) {
+    if (data === "undefined") return undefined;
+    return data;
   }
 };

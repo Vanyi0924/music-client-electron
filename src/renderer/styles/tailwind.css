@@ -6,3 +6,9 @@
 :root{
   /* font-size: 14px; */
 }
+
+/* reset antdesign styles */
+.ant-spin-dot-item{
+  @apply bg-app-base-color;
+
+}

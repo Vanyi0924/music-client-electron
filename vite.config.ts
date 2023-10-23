@@ -2,30 +2,40 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import { terser } from "rollup-plugin-terser";
+import Components from "unplugin-vue-components/vite";
+import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 
-const root = resolve(process.cwd());
+// const root = resolve(process.cwd());
 
 // @ts-ignore
 export default defineConfig(({ command, mode, ssrBuild }) => {
   return {
-    plugins: [vue()],
-    root,
-    base: "",
+    plugins: [
+      Components({
+        // dirs: ["src/renderer/components"],
+        resolvers: [AntDesignVueResolver()],
+        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+        dts: "aaa.d.ts",
+      }),
+      // vue(),
+    ],
+    // root,
+    // base: "",
     server: {
       port: 9024,
     },
     resolve: {
       alias: {
-        "@": resolve(root, "src/renderer"),
+        "@": resolve("src/renderer"),
       },
     },
-    css: {
-      preprocessorOptions: {
-        less: {
-          javascriptEnabled: true,
-        },
-      },
-    },
+    // css: {
+    // preprocessorOptions: {
+    //   less: {
+    //     javascriptEnabled: true,
+    //   },
+    // },
+    // },
     build: {
       emptyOutDir: true,
       rollupOptions: {

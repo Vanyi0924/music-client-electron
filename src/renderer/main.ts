@@ -1,7 +1,7 @@
 import { createApp } from "vue";
+// import "ant-design-vue/dist/antd.dark.less";
 import "./styles/global.css";
 import "./styles/tailwind.css";
-import "./styles/antd-reset.less";
 import "./styles/reset.css";
 import App from "./App.vue";
 import { createPinia } from "pinia";
@@ -11,6 +11,8 @@ import router from "./router";
 import Antd from "ant-design-vue";
 import { Api } from "@music/common";
 import { useAppStore } from "./stores";
+import "./utils/indexed-db";
+import { appIndexedDB } from "./utils/indexed-db";
 
 Api.initHttp({
   baseURL: "http://localhost:8083/api",
@@ -40,8 +42,9 @@ Api.http.axios.interceptors.response.use(
 const app = createApp(App);
 const pinia = createPinia();
 
-app.component("MIcon", MIcon);
-app.component("CommonHeader", CommonHeader);
+// TODO 注册组件
+// app.component("MIcon", MIcon);
+// app.component("CommonHeader", CommonHeader);
 app.use(pinia);
 app.use(router);
 app.use(Antd);
@@ -51,6 +54,7 @@ app.mount("#app");
   const appStore = useAppStore();
   router.afterEach(() => {
     appStore.historyState = window.history.state;
-    console.log("--->>>>", appStore.historyState);
   });
 })();
+
+appIndexedDB.openDB("AppCacheDB", 1);

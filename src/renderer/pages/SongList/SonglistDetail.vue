@@ -36,6 +36,7 @@ import CommonSongList from "@/components/biz/CommonSongList.vue";
 import { Api } from "@music/common";
 import { withCache } from "@/utils/app-cache";
 import router from "@/router";
+import { UniqueKeys } from "@/enums/unique-keys";
 
 const route = useRoute();
 
@@ -49,12 +50,15 @@ const spinning = ref(false);
 
 const getSongs = async () => {
   spinning.value = true;
-  const { data } = await withCache<ReturnType<typeof Api.getSonglistSongs>>(
-    Api.getSonglistSongs,
-    {
-      songlistId: Number(route.query.id),
-    }
-  );
+  const { data } = await withCache<ReturnType<typeof Api.getSonglistSongs>>({
+    key: UniqueKeys.SONGLIST_DETAIL,
+    fn: Api.getSonglistSongs,
+    params: [
+      {
+        songlistId: Number(route.query.id),
+      },
+    ],
+  });
 
   spinning.value = false;
 

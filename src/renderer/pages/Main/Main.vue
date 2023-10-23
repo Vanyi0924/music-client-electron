@@ -1,21 +1,9 @@
 <template>
-  <main class="flex flex-col bg-app-dark-color-200 text-gray-950">
-    <CommonHeader
-      ref="commonHeaderRef"
-      @search-song-start="appStore.songSearchResultVisible = true"
-      @search-song="onSearchSong"
-    >
-      <SongSearchResult
-        v-model="appStore.songSearchResultVisible"
-        :search-song-res="searchSongRes"
-        @page-change="handlePageChange"
-        @ai-search="handleAISearch"
-        @ai-search-end="handleAiSearchEnd"
-      />
-    </CommonHeader>
+  <main class="flex min-h-[100vh] flex-col bg-app-dark-color-200 text-gray-950">
+    <CommonHeader ref="commonHeaderRef"> </CommonHeader>
 
     <!-- VIEW -->
-    <div class="limit-width mx-auto my-5 min-h-[100vh]">
+    <div class="mx-auto mb-[theme(height.common)] mt-5 w-limit pb-5">
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />
@@ -23,11 +11,7 @@
       </router-view>
     </div>
 
-    <PlayerBar
-      class="sticky bottom-0 left-0 flex w-full"
-      :song-detail="songDetail"
-      @action-play="onActionPlay"
-    />
+    <PlayerBar :song-detail="songDetail" @action-play="onActionPlay" />
     <audio
       ref="audioRef"
       :src="appStore?.songDetailURL"
@@ -41,19 +25,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import PlayerBar from "@/components/PlayerBar/PlayerBar.vue";
-import SongSearchResult from "@/components/SongSearchResult/SongSearchResult.vue";
 import { useAppStore } from "@/stores";
 import { withEmptyValue } from "@/utils";
-import CommonHeader from "@/components/CommonHeader/CommonHeader.vue";
 import { useRoute, useRouter } from "vue-router";
 
-const commonHeaderRef = ref<InstanceType<typeof CommonHeader>>();
-
-const searchSongRes = ref<SonglistRes>();
-
-const onSearchSong = (res: SonglistRes) => {
-  searchSongRes.value = res;
-};
+const commonHeaderRef = ref<any>();
 
 const appStore = useAppStore();
 const songDetail = computed(() => appStore.songDetail);
@@ -108,20 +84,6 @@ const onDurationchange = (ev: Event) => {
 const onEnded = () => {
   appStore.isPlaying = false;
   appStore.playNextSong();
-};
-
-// const aiSearchResult = ref<AISearchRes>();
-const handleAISearch = async (pageNo = 1) => {
-  // const { data } = await getAISearchApi(appStore.keywords, pageNo);
-  // aiSearchResult.value = data;
-};
-
-const handleAiSearchEnd = () => {
-  commonHeaderRef.value?.searchSong();
-};
-
-const handlePageChange = (pageNo: number) => {
-  commonHeaderRef.value?.searchSong(pageNo);
 };
 
 const router = useRouter();

@@ -1,63 +1,76 @@
+import { UniqueKeys } from "@/enums/unique-keys";
+import { appIndexedDB } from "./indexed-db";
+
 /**
  * @description 数据缓存
- *
  */
-type DataPool = Map<any, Map<string, any>>;
+type DataPool = Record<UniqueKeys, Map<string, any>>;
 
-type KeyParams = [fn: any, params: any];
+type KeyParams = {
+  key: UniqueKeys;
+  fn: any;
+  params?: any[];
+};
 type Payload<T> = {
   data: T;
 };
 
+const stringify = JSON.stringify;
+
 class AppCache {
-  private dataPool: DataPool = new Map([]);
+  private dataPool: DataPool = {} as any;
 
   constructor() {}
 
-  private getFirstLevelMap(key: KeyParams) {
-    if (!this.dataPool.has(key[0])) {
-      this.dataPool.set(key[0], new Map());
+  private getFirstLevelMap(keyParams: KeyParams) {
+    if (!this.dataPool[keyParams.key]) {
+      this.dataPool[keyParams.key] = new Map();
     }
-
-    return this.dataPool.get(key[0]);
+    return this.dataPool[keyParams.key];
   }
 
   // 添加
-  add<T>(key: KeyParams, payload: Payload<T>) {
-    const paramsKeyMap = this.getFirstLevelMap(key);
-    paramsKeyMap!.set(JSON.stringify(key[1]), payload);
+  add<T>(keyParams: KeyParams, payload: Payload<T>) {
+    const paramsKeyMap = this.getFirstLevelMap(keyParams);
+    const k = stringify(keyParams.params);
+    const v = payload;
+    paramsKeyMap!.set(k, v);
+    return {
+      k,
+      v,
+    };
   }
 
   // 读取
-  get<T>(key: KeyParams): Payload<T> {
-    const paramsKeyMap = this.getFirstLevelMap(key);
-    return paramsKeyMap?.get(JSON.stringify(key[1]));
+  get<T>(keyParams: KeyParams): Payload<T> {
+    const paramsKeyMap = this.getFirstLevelMap(keyParams);
+    return paramsKeyMap?.get(stringify(keyParams.params));
   }
 
   // 是否存在
-  has(key: KeyParams) {
-    const paramsKeyMap = this.getFirstLevelMap(key);
-    return paramsKeyMap?.has(JSON.stringify(key[1]));
+  has(keyParams: KeyParams) {
+    const paramsKeyMap = this.getFirstLevelMap(keyParams);
+    return paramsKeyMap?.has(stringify(keyParams.params));
   }
 }
 
 const appCache = new AppCache();
 
-// 函数 + 参数stringify 组成唯一 key
-// 支持自定义配置
-export const withCache = async <T = any>(
-  fn: any,
-  ...params: any[]
-): Promise<T> => {
-  const keyParams: KeyParams = [fn, params];
+export const withCache = async <T = any>(args: KeyParams): Promise<T> => {
+  console.log("appCache", appCache);
 
-  if (appCache.has(keyParams)) {
-    return appCache.get<T>(keyParams).data;
+  args.params = args.params ?? [];
+
+  if (appCache.has(args)) {
+    return appCache.get<T>(args).data;
   } else {
-    const result = await fn(...params);
-    appCache.add(keyParams, {
+    const result = await args.fn(...args.params);
+    const row = appCache.add(args, {
       data: result,
     });
+
+    console.log(row);
+
     return result;
   }
 };

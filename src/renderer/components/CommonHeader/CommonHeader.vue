@@ -1,53 +1,57 @@
 <template>
   <header
-    class="app-drag sticky left-0 top-0 z-50 flex w-full flex-shrink-0 text-sm backdrop-blur-sm"
+    class="app-drag sticky left-0 top-0 z-50 flex w-full flex-shrink-0 text-sm"
   >
+    <!-- backgroud -->
+    <div
+      class="absolute left-0 top-0 h-full w-full bg-app-dark-color-200/90 backdrop-blur-sm"
+    ></div>
     <!-- 内容区域 -->
     <div
-      class="app-header-height limit-width relative mx-auto flex items-center justify-between"
+      class="relative mx-auto flex h-common w-limit items-center justify-between"
     >
-      <!-- <button
-        v-if="$route.path !== `/songlist`"
-        class="mr-4 text-white"
-        @click="$router.back()"
-      >
-        返回
-      </button>
-      <div
-        v-if="$route.path === `/playDetail`"
-        class="absolute left-20 text-white"
-      >
-        <m-icon
-          :width="24"
-          class="cursor-pointer opacity-75"
-          @click="$router.push(`/songlist`)"
-        >
-          <ArrowDropDownRoundIcon />
-        </m-icon>
-      </div> -->
       <div class="flex items-center">
         <MusicLogo />
-        <div
-          class="opt-btn prev"
-          :class="[!appStore.routerCanBack && `disabled`]"
-          @click="appStore.routerCanBack && $router.back()"
-        >
-          <m-icon :width="18">
-            <ArrowDropDownRoundIcon />
-          </m-icon>
+        <!-- 操作按钮 -->
+        <div class="opt-btn-wrapper flex">
+          <div
+            class="opt-btn prev"
+            :class="[!appStore.routerCanBack && `disabled`]"
+            @click="appStore.routerCanBack && $router.back()"
+          >
+            <m-icon :width="18">
+              <ArrowDropDownRoundIcon />
+            </m-icon>
+          </div>
+          <div
+            class="opt-btn next"
+            :class="[!appStore.routerCanForward && `disabled`]"
+            @click="appStore.routerCanForward && $router.forward()"
+          >
+            <m-icon :width="18">
+              <ArrowDropDownRoundIcon />
+            </m-icon>
+          </div>
         </div>
-        <div
-          class="opt-btn next"
-          :class="[!appStore.routerCanForward && `disabled`]"
-          @click="appStore.routerCanForward && $router.forward()"
-        >
-          <m-icon :width="18">
-            <ArrowDropDownRoundIcon />
-          </m-icon>
+        <div class="router-wrapper ml-8 text-white/75">
+          <router-link to="/songlist">热门歌单</router-link>
+          <router-link to="/songlist1">排行榜</router-link>
         </div>
       </div>
 
-      <div class="search-wrapper">
+      <div class="right-wrapper flex">
+        <div class="mr-4 flex items-center opacity-80">
+          <a-tooltip placement="top">
+            <template #title>
+              <span>登录后可下载、收藏海量歌曲</span>
+            </template>
+            <a-button type="text">登录</a-button>
+          </a-tooltip>
+
+          <a-divider type="vertical" class="m-0" />
+          <a-button type="link">注册</a-button>
+        </div>
+
         <a-input
           v-model:value="appStore.keywords"
           placeholder="搜索"
@@ -67,8 +71,14 @@
           </template>
         </a-input>
       </div>
-      <slot></slot>
     </div>
+    <!-- 搜索结果 -->
+    <SongSearchResult
+      v-model="appStore.songSearchResultVisible"
+      :search-song-res="searchSongRes"
+      :spinning="spinning"
+      @page-change="handlePageChange"
+    />
   </header>
 </template>
 
@@ -77,48 +87,44 @@ import { useAppStore } from "@/stores";
 import { ref } from "vue";
 import ArrowDropDownRoundIcon from "@/assets/icons/vue/ArrowDropDownRound.vue";
 import SearchIcon from "@/assets/icons/vue/Search.vue";
-import CloseIcon from "@/assets/icons/vue/Close.vue";
 import { Api } from "@music/common";
 import MusicLogo from "@/components/MusicLogo/MusicLogo.vue";
+import SongSearchResult from "@/components/SongSearchResult/SongSearchResult.vue";
 
-const emit = defineEmits(["searchSongStart", "searchSong"]);
+const emit = defineEmits([]);
+
+const spinning = ref(false);
 
 const searchSong = async (pageNo = 1) => {
   if (!appStore.keywords.trim().length) {
     return;
   }
-  emit("searchSongStart");
   appStore.currentPage = pageNo;
-  const { data } = await Api.searchSongs(appStore.keywords.trim(), pageNo);
-  emit("searchSong", data);
+  spinning.value = true;
+  const { data } = await Api.searchSongs(appStore.keywords.trim(), pageNo, 15);
+  spinning.value = false;
+  searchSongRes.value = data;
 };
 
 const appStore = useAppStore();
+const searchSongRes = ref<SonglistRes>();
 
-defineExpose({
-  searchSong,
-});
+const handlePageChange = (pageNo: number) => {
+  searchSong(pageNo);
+};
 </script>
 
 <style lang="less" scoped>
-@import "@/styles/variable.less";
-
-header {
-  background-color: rgba(@app-dark-color-200, 0.9);
-}
-
 .opt-btn {
-  @apply flex items-center justify-center;
+  @apply flex items-center justify-center text-app-white-color-100;
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  color: @app-white-color-100;
-  // background-color: rgba(@app-white-color-100, 5);
   opacity: 0.6;
   cursor: pointer;
   transition: all 0.25s;
   &:hover {
-    background-color: rgba(@app-white-color-100, 0.2);
+    @apply bg-app-white-color-100/20;
   }
   &.disabled {
     opacity: 0.3;
@@ -134,6 +140,15 @@ header {
   &.next {
     margin-left: 4px;
     transform: rotate(-90deg);
+  }
+}
+
+.router-wrapper {
+  & > a {
+    @apply mr-4;
+    &.router-link-exact-active {
+      @apply text-lg text-white;
+    }
   }
 }
 </style>
