@@ -19,6 +19,9 @@
       @durationchange="onDurationchange"
       @ended="onEnded"
     ></audio>
+
+    <!-- 登录、注册 modal -->
+    <LoginRegisterModal />
   </main>
 </template>
 

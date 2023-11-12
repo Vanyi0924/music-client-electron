@@ -1,4 +1,4 @@
-import { UniqueKeys } from "@/enums/unique-keys";
+import { UniqueKeys } from "@/enums/UniqueKeys";
 import { appIndexedDB } from "./indexed-db";
 
 /**

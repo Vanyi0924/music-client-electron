@@ -12,7 +12,7 @@
           @click="gotoDetail(sl)"
         >
           <a-image
-            class="rounded-2xl"
+            class="aspect-auto w-full rounded-2xl"
             :preview="false"
             :src="sl.cover"
             :placeholder="true"
@@ -30,13 +30,13 @@
 </template>
 
 <script setup lang="ts">
-import { Api } from "@music/common";
+import { Api } from "@/http";
 import { useAppStore } from "@/stores";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-// import { BizResponse, Page, Songlist } from "@music/common/types/typings";
 import { withCache } from "@/utils/app-cache";
-import { UniqueKeys } from "@/enums/unique-keys";
+import { UniqueKeys } from "@/enums/UniqueKeys";
+import { Songlist } from "@music/common/types/typings";
 
 const appStore = useAppStore();
 
@@ -81,3 +81,4 @@ const gotoDetail = (songlist: Songlist) => {
   min-height: 100vh;
 }
 </style>
+@/enums/UniqueKeys

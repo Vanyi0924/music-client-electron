@@ -12,12 +12,10 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
   return {
     plugins: [
       Components({
-        // dirs: ["src/renderer/components"],
-        resolvers: [AntDesignVueResolver()],
-        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-        dts: "aaa.d.ts",
+        dirs: ["src/renderer/components"],
+        // resolvers: [AntDesignVueResolver()],
       }),
-      // vue(),
+      vue(),
     ],
     // root,
     // base: "",
@@ -29,13 +27,13 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
         "@": resolve("src/renderer"),
       },
     },
-    // css: {
-    // preprocessorOptions: {
-    //   less: {
-    //     javascriptEnabled: true,
-    //   },
-    // },
-    // },
+    css: {
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true,
+        },
+      },
+    },
     build: {
       emptyOutDir: true,
       rollupOptions: {

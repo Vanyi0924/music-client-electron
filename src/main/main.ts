@@ -14,7 +14,7 @@ process.env.GLOBAL_ENV_PWD = app.getAppPath();
 
 // 载入配置 start
 const { main } = electronConfig();
-const { browserWindowSize, loadURL } = app.isPackaged ? main.prod : main.dev;
+const { browserWindowSize, loadURL } = main;
 // 初始化日志实例
 createDebugLogger();
 // 初始化数据库

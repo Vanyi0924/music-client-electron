@@ -1,7 +1,8 @@
-import { Api } from "@music/common";
+import { Api } from "@/http";
 import { PLAYLIST } from "@/config/constants";
 import { nextSongIndex, PlayModel, SwitchSongDirection } from "@/utils";
 import { defineStore } from "pinia";
+import { Songlist } from "@/http/typings";
 // import { Songlist } from "@music/common/types/typings";
 
 interface AppState {

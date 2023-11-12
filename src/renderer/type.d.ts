@@ -10,11 +10,11 @@ interface SearchSongRes {
 }
 
 interface SongDetail {
-  id: number;
+  id: string;
   name: string;
   singerName: string;
   albumName: string;
-  albumId: number;
+  albumId: string;
   duration: number;
   url: string;
   lyric: { lyric: string; time: string }[];

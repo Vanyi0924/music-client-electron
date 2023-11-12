@@ -12,7 +12,7 @@
     >
       <div class="flex items-center">
         <MusicLogo />
-        <!-- 操作按钮 -->
+        <!-- 前进|返回 操作按钮 -->
         <div class="opt-btn-wrapper flex">
           <div
             class="opt-btn prev"
@@ -35,23 +35,45 @@
         </div>
         <div class="router-wrapper ml-8 text-white/75">
           <router-link to="/songlist">热门歌单</router-link>
-          <router-link to="/songlist1">排行榜</router-link>
+          <!-- <router-link to="/songlist1">排行榜</router-link> -->
         </div>
       </div>
 
       <div class="right-wrapper flex">
-        <div class="mr-4 flex items-center opacity-80">
+        <!-- 未登录  -->
+        <div
+          v-if="!accountStore.isLogin"
+          class="mr-4 flex items-center opacity-80"
+        >
           <a-tooltip placement="top">
             <template #title>
               <span>登录后可下载、收藏海量歌曲</span>
             </template>
-            <a-button type="text">登录</a-button>
+            <a-button
+              class="account-btn login-btn"
+              type="link"
+              @click="showModal(true)"
+              >登录</a-button
+            >
           </a-tooltip>
 
           <a-divider type="vertical" class="m-0" />
-          <a-button type="link">注册</a-button>
+          <a-button
+            class="account-btn regist-btn"
+            type="link"
+            @click="showModal(false)"
+            >注册</a-button
+          >
         </div>
-
+        <!-- 已登录 -->
+        <div v-else class="mr-4 flex cursor-pointer items-center">
+          <a-tooltip placement="top">
+            <template #title>
+              <span>{{ accountStore.user?.email }}</span>
+            </template>
+            <UserOutlined style="font-size: 20px" class="text-white" />
+          </a-tooltip>
+        </div>
         <a-input
           v-model:value="appStore.keywords"
           placeholder="搜索"
@@ -87,9 +109,11 @@ import { useAppStore } from "@/stores";
 import { ref } from "vue";
 import ArrowDropDownRoundIcon from "@/assets/icons/vue/ArrowDropDownRound.vue";
 import SearchIcon from "@/assets/icons/vue/Search.vue";
-import { Api } from "@music/common";
+import { Api } from "@/http";
 import MusicLogo from "@/components/MusicLogo/MusicLogo.vue";
 import SongSearchResult from "@/components/SongSearchResult/SongSearchResult.vue";
+import { useAccountStore } from "@/stores/account";
+import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 
 const emit = defineEmits([]);
 
@@ -111,6 +135,13 @@ const searchSongRes = ref<SonglistRes>();
 
 const handlePageChange = (pageNo: number) => {
   searchSong(pageNo);
+};
+
+const accountStore = useAccountStore();
+
+const showModal = (isLogin: boolean) => {
+  accountStore.loginRegisterModal.visible = true;
+  accountStore.loginRegisterModal.isLogin = isLogin;
 };
 </script>
 
@@ -149,6 +180,13 @@ const handlePageChange = (pageNo: number) => {
     &.router-link-exact-active {
       @apply text-lg text-white;
     }
+  }
+}
+
+.account-btn {
+  @apply text-white/75 transition-all hover:text-white;
+  &.regist-btn {
+    @apply text-app-base-color/90 hover:text-app-base-color;
   }
 }
 </style>

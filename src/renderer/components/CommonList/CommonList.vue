@@ -2,10 +2,10 @@
   <ul class="section-item select-none">
     <li
       class="section-item-list relative flex cursor-pointer py-2 pl-7 text-xs even:bg-app-dark-color-400/50 hover:text-white"
-      v-for="l in list"
+      v-for="(l, index) in list"
       @dblclick="$emit(`dblclick`, l)"
     >
-      <slot :data="l"></slot>
+      <slot :data="l" :index="index"></slot>
     </li>
   </ul>
 </template>

@@ -162,11 +162,21 @@ export const nextSongIndex = (
  * @description: json parse
  * @param {any} data
  */
-export const enhanceJSONParse = <T = any>(data: any): T | undefined => {
+export const enhanceJSONParse = <T = any>(data: any): T | null => {
   try {
     return JSON.parse(data);
   } catch (err) {
-    if (data === "undefined") return undefined;
-    return data;
+    return null;
   }
+};
+
+/**
+ * @description: 小于补0
+ */
+export const paddingStrStart = <T = any>(
+  str: String,
+  maxLen = 2,
+  fillStr = "0"
+): string => {
+  return str.padStart(maxLen, fillStr);
 };

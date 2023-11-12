@@ -23,3 +23,15 @@ npm run dev // pnpm dev
 ```js
 npm run build // pnpm build
 ```
+
+## 问题
+
+Q: Tailwinds + Ant design : Button color is white but has own color wnen I hover it
+A: https://stackoverflow.com/questions/71715157/tailwinds-ant-design-button-color-is-white-but-has-own-color-wnen-i-hover-it
+修改配置文件`tailwind.config.js`,
+
+```js
+corePlugins: {
+  preflight: false,
+},
+```

@@ -33,10 +33,10 @@ import { computed, ref, watch, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { useAppStore } from "@/stores";
 import CommonSongList from "@/components/biz/CommonSongList.vue";
-import { Api } from "@music/common";
+import { Api } from "@/http";
 import { withCache } from "@/utils/app-cache";
 import router from "@/router";
-import { UniqueKeys } from "@/enums/unique-keys";
+import { UniqueKeys } from "@/enums/UniqueKeys";
 
 const route = useRoute();
 
@@ -105,3 +105,4 @@ onUnmounted(() => {
   }
 }
 </style>
+@/enums/UniqueKeys

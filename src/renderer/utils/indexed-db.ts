@@ -4,7 +4,7 @@
  * @param {number} version
  */
 
-import { UniqueKeys } from "@/enums/unique-keys";
+import { UniqueKeys } from "@/enums/UniqueKeys";
 import { enhanceJSONParse } from ".";
 
 export const APP_DB = {
