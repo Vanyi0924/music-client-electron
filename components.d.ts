@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     EmptyMusic: typeof import('./src/renderer/components/EmptyMusic/EmptyMusic.vue')['default']
     LoginRegisterModal: typeof import('./src/renderer/components/LoginRegisterModal/LoginRegisterModal.vue')['default']
     MIcon: typeof import('./src/renderer/components/MIcon/MIcon.vue')['default']
+    MobileCommonHeader: typeof import('./src/renderer/components/CommonHeader/MobileCommonHeader.vue')['default']
     MusicLogo: typeof import('./src/renderer/components/MusicLogo/MusicLogo.vue')['default']
     PlayerArea: typeof import('./src/renderer/components/PlayerArea/PlayerArea.vue')['default']
     PlayerBar: typeof import('./src/renderer/components/PlayerBar/PlayerBar.vue')['default']

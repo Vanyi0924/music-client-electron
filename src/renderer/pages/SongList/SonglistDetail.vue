@@ -62,7 +62,14 @@ const getSongs = async () => {
 
   spinning.value = false;
 
-  songs.value = data;
+  songs.value = data.map((d) => {
+    return {
+      ...d,
+      id: String(d.id),
+      albumId: String(d.albumId),
+      _hasFavorite: appStore.favoriteSongs.has(String(d.id)),
+    };
+  });
 };
 
 watch(

@@ -1,14 +1,14 @@
 <template>
-  <div class="song-list">
+  <div class="song-list px-4">
     <!-- <div
       class="loading absolute left-0 top-0 flex h-full w-full items-center justify-center bg-app-dark-color-200"
     > -->
     <a-spin :spinning="spinning" :delay="200">
-      <ul class="list flex flex-wrap">
+      <ul class="grid grid-cols-3 gap-4">
         <li
           v-for="sl in songlist"
           :key="sl.id"
-          class="cursor-pointer"
+          class="w-full cursor-pointer"
           @click="gotoDetail(sl)"
         >
           <a-image
@@ -19,7 +19,7 @@
             :alt="sl.description"
           />
 
-          <p class="text text-md m-1 break-words text-white">
+          <p class="sm:text-md m-1 break-words text-xs text-white">
             {{ sl.description }}
           </p>
         </li>
@@ -75,10 +75,9 @@ const gotoDetail = (songlist: Songlist) => {
 
 <style lang="less" scoped>
 .list {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 24px;
-  min-height: 100vh;
+  // display: grid;
+  // grid-template-columns: repeat(5, 1fr);
+  // gap: 24px;
+  // min-height: 100vh;
 }
 </style>
-@/enums/UniqueKeys

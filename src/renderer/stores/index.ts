@@ -24,6 +24,7 @@ interface AppState {
   curSonglist?: Songlist;
   currentPage: number;
   historyState?: InstanceType<typeof window.History>["state"];
+  favoriteSongs: Map<string, { id: string; songId: string }>;
 }
 
 export const useAppStore = defineStore("app", {
@@ -46,6 +47,7 @@ export const useAppStore = defineStore("app", {
       playModel: PlayModel.loop,
       startPlayTs: Date.now(),
       currentPage: 1,
+      favoriteSongs: new Map(),
     };
   },
   getters: {
@@ -55,6 +57,14 @@ export const useAppStore = defineStore("app", {
     routerCanForward: (state) => Boolean(state.historyState?.forward),
   },
   actions: {
+    setPlaylist(playlist: SongDetail[]) {
+      this.playlist = playlist;
+      localStorage.setItem(PLAYLIST, JSON.stringify(this.playlist));
+    },
+
+    removePlaylist() {
+      this.setPlaylist([]);
+    },
     /**
      * @description: 切换播放模式
      */

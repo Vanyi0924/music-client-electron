@@ -4,11 +4,11 @@
     @click="$router.push(`/songlist`)"
   >
     <div
-      class="logo-wrapper flex h-12 w-12 items-center justify-center rounded-[50%] bg-white"
+      class="flex aspect-[1] w-9 flex-shrink-0 items-center justify-center rounded-[50%] bg-white sm:w-12"
     >
-      <img :src="Logo" alt="律动音乐" class="w-8" />
+      <img :src="Logo" alt="律动音乐" class="w-5 sm:w-8" />
     </div>
-    <span class="ml-2 text-lg text-white">律动音乐</span>
+    <span class="ml-2 text-base text-white sm:text-lg">律动音乐</span>
   </div>
 </template>
 
@@ -17,7 +17,4 @@ import { ref } from "vue";
 import Logo from "@/assets/imgs/logo.svg";
 </script>
 
-<style lang="less" scoped>
-.logo-wrapper {
-}
-</style>
+<style lang="less" scoped></style>

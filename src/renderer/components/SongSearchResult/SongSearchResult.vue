@@ -26,6 +26,8 @@
             @change="onHadSongsPageChange"
           />
         </div>
+
+        <p v-if="!searchSongRes" class="text-center">暂无数据...</p>
       </div>
     </a-spin>
   </section>
@@ -39,10 +41,6 @@ import CommonSongList from "../biz/CommonSongList.vue";
 interface Props {
   modelValue: boolean;
   searchSongRes?: SonglistRes;
-  aiSearchSongRes?: {
-    records: AISongDetail[];
-    total: number;
-  };
   spinning: boolean;
 }
 

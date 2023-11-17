@@ -174,9 +174,9 @@ export const enhanceJSONParse = <T = any>(data: any): T | null => {
  * @description: 小于补0
  */
 export const paddingStrStart = <T = any>(
-  str: String,
+  str: string | number,
   maxLen = 2,
   fillStr = "0"
 ): string => {
-  return str.padStart(maxLen, fillStr);
+  return str.toString().padStart(maxLen, fillStr);
 };

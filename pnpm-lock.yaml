@@ -5,9 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@music/common':
-    specifier: link:../music-common-module/dist
-    version: link:../music-common-module/dist
+  '@vueuse/core':
+    specifier: ^10.6.1
+    version: 10.6.1(vue@3.3.4)
   ant-design-vue:
     specifier: ^4.0.6
     version: 4.0.6(vue@3.3.4)
@@ -126,7 +126,7 @@ devDependencies:
     version: 5.0.4
   unplugin-auto-import:
     specifier: ^0.11.1
-    version: 0.11.1(esbuild@0.14.50)(rollup@2.78.1)(vite@4.3.9)(webpack@5.88.1)
+    version: 0.11.1(@vueuse/core@10.6.1)(esbuild@0.14.50)(rollup@2.78.1)(vite@4.3.9)(webpack@5.88.1)
   unplugin-vue-components:
     specifier: ^0.22.4
     version: 0.22.4(esbuild@0.14.50)(rollup@2.78.1)(vite@4.3.9)(vue@3.3.4)(webpack@5.88.1)
@@ -736,6 +736,9 @@ packages:
     dev: true
     optional: true
 
+  /@types/web-bluetooth@0.0.20:
+    resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
+
   /@types/workerpool@6.1.0:
     resolution: {integrity: sha512-C+J/c1BHyc351xJuiH2Jbe+V9hjf5mCzRP0UK4KEpF5SpuU+vJ/FC5GLZsCU/PJpp/3I6Uwtfm3DG7Lmrb7LOQ==, tarball: https://registry.npm.taobao.org/@types/workerpool/-/workerpool-6.1.0.tgz}
     dependencies:
@@ -1014,6 +1017,28 @@ packages:
 
   /@vue/shared@3.3.4:
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
+
+  /@vueuse/core@10.6.1(vue@3.3.4):
+    resolution: {integrity: sha512-Pc26IJbqgC9VG1u6VY/xrXXfxD33hnvxBnKrLlA2LJlyHII+BSrRoTPJgGYq7qZOu61itITFUnm6QbacwZ4H8Q==}
+    dependencies:
+      '@types/web-bluetooth': 0.0.20
+      '@vueuse/metadata': 10.6.1
+      '@vueuse/shared': 10.6.1(vue@3.3.4)
+      vue-demi: 0.14.6(vue@3.3.4)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+
+  /@vueuse/metadata@10.6.1:
+    resolution: {integrity: sha512-qhdwPI65Bgcj23e5lpGfQsxcy0bMjCAsUGoXkJ7DsoeDUdasbZ2DBa4dinFCOER3lF4gwUv+UD2AlA11zdzMFw==}
+
+  /@vueuse/shared@10.6.1(vue@3.3.4):
+    resolution: {integrity: sha512-TECVDTIedFlL0NUfHWncf3zF9Gc4VfdxfQc8JFwoVZQmxpONhLxFrlm0eHQeidHj4rdTPL3KXJa0TZCk1wnc5Q==}
+    dependencies:
+      vue-demi: 0.14.6(vue@3.3.4)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
 
   /@webassemblyjs/ast@1.11.6:
     resolution: {integrity: sha512-IN1xI7PwOvLPgjcf180gC1bqn3q/QaOCwYUahIOhbYUu8KA/3tw2RT/T0Gidi1l7Hhj5D/INhJxiICObqpMu4Q==}
@@ -5131,7 +5156,7 @@ packages:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==, tarball: https://registry.npm.taobao.org/universalify/-/universalify-2.0.0.tgz}
     engines: {node: '>= 10.0.0'}
 
-  /unplugin-auto-import@0.11.1(esbuild@0.14.50)(rollup@2.78.1)(vite@4.3.9)(webpack@5.88.1):
+  /unplugin-auto-import@0.11.1(@vueuse/core@10.6.1)(esbuild@0.14.50)(rollup@2.78.1)(vite@4.3.9)(webpack@5.88.1):
     resolution: {integrity: sha512-3KMbjc3Sv2h1osgQ16uKmD2XHb8MLK3Lj5Twzo3x2vDexYdNKjVljLZUX+eT5cvh2f1VzJR77dkzDhdEi9+1uw==, tarball: https://registry.npm.taobao.org/unplugin-auto-import/-/unplugin-auto-import-0.11.1.tgz}
     engines: {node: '>=14'}
     peerDependencies:
@@ -5142,6 +5167,7 @@ packages:
     dependencies:
       '@antfu/utils': 0.5.2
       '@rollup/pluginutils': 4.2.1
+      '@vueuse/core': 10.6.1(vue@3.3.4)
       local-pkg: 0.4.2
       magic-string: 0.26.2
       unimport: 0.6.7(esbuild@0.14.50)(rollup@2.78.1)(vite@4.3.9)(webpack@5.88.1)
@@ -5335,6 +5361,20 @@ packages:
     dependencies:
       vue: 3.3.4
     dev: false
+
+  /vue-demi@0.14.6(vue@3.3.4):
+    resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.3.4
 
   /vue-eslint-parser@9.0.3(eslint@8.20.0):
     resolution: {integrity: sha512-yL+ZDb+9T0ELG4VIFo/2anAOz8SvBdlqEnQnvJ3M7Scq56DvtjY0VY88bByRZB0D4J0u8olBcfrXTVONXsh4og==, tarball: https://registry.npm.taobao.org/vue-eslint-parser/-/vue-eslint-parser-9.0.3.tgz}

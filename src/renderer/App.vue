@@ -16,9 +16,22 @@
 
 <script setup lang="ts">
 import { theme } from "ant-design-vue";
-import { onBeforeMount } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
+import { getStream } from "./http/api";
 
 onBeforeMount(() => {});
+
+onMounted(() => {});
+
+const myUrl = ref("");
+
+const test = async () => {
+  const { data } = await getStream();
+  console.log(data);
+  let url = window.URL.createObjectURL(data);
+  console.log(url);
+  myUrl.value = url;
+};
 </script>
 
 <style lang="less">

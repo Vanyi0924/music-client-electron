@@ -18,6 +18,7 @@ interface SongDetail {
   duration: number;
   url: string;
   lyric: { lyric: string; time: string }[];
+  _hasFavorite: boolean;
 }
 
 interface AISongDetail {

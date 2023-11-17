@@ -28,6 +28,12 @@ export const configApi = () => {
 
   Api.http.axios.interceptors.response.use(
     function (response) {
+      console.log(response.config.url);
+
+      if (response.config.url?.includes("/test/stream")) {
+        return response;
+      }
+
       if (response.data.code !== ResponseCode.SUCCESS) {
         message.error(response.data.msg);
       }

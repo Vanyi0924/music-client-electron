@@ -1,6 +1,6 @@
 <template>
   <div
-    class="player-bar fixed bottom-0 left-0 flex h-common w-full justify-center bg-app-dark-color-300 text-white"
+    class="player-bar fixed bottom-0 left-0 flex h-common w-full justify-center bg-app-dark-color-300 px-4 text-white"
   >
     <!-- 进度条 -->
     <ProgressBar
@@ -8,12 +8,12 @@
       class="song-progress-bar absolute top-0"
     />
 
-    <div class="relative flex w-limit items-center justify-center">
+    <div class="relative flex w-full items-center justify-center">
       <!-- 歌曲信息 -->
       <div class="song-detail absolute left-0">
         <div class="thumbnail group flex items-center justify-center">
           <div v-if="appStore?.albumDetail" class="relative">
-            <img :src="appStore?.albumDetail.picUrl" />
+            <img :src="appStore?.albumDetail.picUrl" width="52" height="52" />
 
             <div
               v-if="$route.path !== `/playDetail`"
@@ -35,7 +35,7 @@
             </MIcon>
           </div>
         </div>
-        <div class="song-name">
+        <div class="song-name hidden sm:block">
           <div v-if="songDetail">
             <span>{{ songDetail?.name }}</span>
             <span class="singer text-xs opacity-50">
@@ -45,7 +45,7 @@
           </div>
           <div v-else>请选择歌曲</div>
         </div>
-        <div class="song-time text-xs opacity-50">
+        <div class="song-time hidden text-xs opacity-50 sm:block">
           {{ number2Time(appStore.playingTimestamp) }} /
           {{ number2Time(appStore.songDuration) }}
         </div>
@@ -96,7 +96,7 @@
             <span>{{ curPlayModel?.label }}</span>
           </template>
           <m-icon :width="20" @click="() => appStore.setPlayModel()">
-            <component :is="curPlayModel?.icon"/>
+            <component :is="curPlayModel?.icon" />
           </m-icon>
         </a-tooltip>
       </div>

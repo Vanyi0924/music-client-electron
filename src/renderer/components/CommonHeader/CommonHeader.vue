@@ -1,6 +1,6 @@
 <template>
   <header
-    class="app-drag sticky left-0 top-0 z-50 flex w-full flex-shrink-0 text-sm"
+    class="app-drag sticky left-0 top-0 z-50 flex w-full flex-shrink-0 px-4 text-sm"
   >
     <!-- backgroud -->
     <div
@@ -8,12 +8,12 @@
     ></div>
     <!-- 内容区域 -->
     <div
-      class="relative mx-auto flex h-common w-limit items-center justify-between"
+      class="relative mx-auto flex h-common w-full items-center justify-between"
     >
       <div class="flex items-center">
         <MusicLogo />
         <!-- 前进|返回 操作按钮 -->
-        <div class="opt-btn-wrapper flex">
+        <div class="opt-btn-wrapper hidden sm:flex">
           <div
             class="opt-btn prev"
             :class="[!appStore.routerCanBack && `disabled`]"
@@ -33,7 +33,7 @@
             </m-icon>
           </div>
         </div>
-        <div class="router-wrapper ml-8 text-white/75">
+        <div class="router-wrapper ml-8 hidden text-white/75 sm:block">
           <router-link to="/songlist">热门歌单</router-link>
           <!-- <router-link to="/songlist1">排行榜</router-link> -->
         </div>
@@ -67,14 +67,39 @@
         </div>
         <!-- 已登录 -->
         <div v-else class="mr-4 flex cursor-pointer items-center">
-          <a-tooltip placement="top">
-            <template #title>
-              <span>{{ accountStore.user?.email }}</span>
-            </template>
+          <a-dropdown placement="bottom">
             <UserOutlined style="font-size: 20px" class="text-white" />
-          </a-tooltip>
+            <template #overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a href="javascript:;">{{ accountStore.user?.email }}</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="handleLogout">退出登录</a>
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
         </div>
+
+        <m-icon
+          class="mx-2 flex-shrink-0 cursor-pointer text-white sm:hidden"
+          :width="20"
+          @click="mobileSearchMenuVisible = true"
+        >
+          <SearchIcon />
+        </m-icon>
+
+        <m-icon
+          class="mx-2 flex-shrink-0 cursor-pointer text-white sm:hidden"
+          :width="20"
+          @click="mobileMenuVisible = true"
+        >
+          <MoreIcon />
+        </m-icon>
+
         <a-input
+          class="hidden sm:block"
           v-model:value="appStore.keywords"
           placeholder="搜索"
           allow-clear
@@ -85,6 +110,7 @@
               (appStore.songSearchResultVisible = true)
           "
           @blur="appStore.searchIsFocus = false"
+          @change="searchChange"
         >
           <template #prefix>
             <m-icon class="mx-2 flex-shrink-0" :width="16">
@@ -101,19 +127,59 @@
       :spinning="spinning"
       @page-change="handlePageChange"
     />
+
+    <!-- mobile 菜单 -->
+    <a-modal v-model:open="mobileMenuVisible" :footer="null">
+      <router-link to="/songlist">热门歌单</router-link>
+    </a-modal>
+
+    <!-- mobile 菜单 -->
+    <a-modal v-model:open="mobileSearchMenuVisible" :footer="null">
+      <div class="flex h-[60vh] flex-col">
+        <a-input-search
+          v-model:value="appStore.keywords"
+          placeholder="搜索"
+          enter-button
+          allowClear
+          style="margin-top: 24px"
+          @search="() => searchSong()"
+        />
+        <p v-if="searchSongRes" class="my-2 text-right text-xs">
+          共
+          <strong class="text-app-base-color">{{ searchSongRes.total }}</strong>
+          个结果
+        </p>
+        <ul class="h-0 flex-auto overflow-auto scroll-auto" ref="scrollEl">
+          <li
+            v-for="(record, index) in searchSongRes?.records"
+            class="flex py-2"
+          >
+            <i class="w-8">{{ paddingStrStart(index + 1) }}</i>
+            <span class="flex-auto">{{ record.name }}</span>
+            <span class="w-16 flex-shrink-0 truncate text-right">{{
+              record.singerName
+            }}</span>
+          </li>
+        </ul>
+      </div>
+    </a-modal>
   </header>
 </template>
 
 <script setup lang="ts">
 import { useAppStore } from "@/stores";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ArrowDropDownRoundIcon from "@/assets/icons/vue/ArrowDropDownRound.vue";
 import SearchIcon from "@/assets/icons/vue/Search.vue";
+import MoreIcon from "@/assets/icons/vue/More.vue";
 import { Api } from "@/http";
 import MusicLogo from "@/components/MusicLogo/MusicLogo.vue";
 import SongSearchResult from "@/components/SongSearchResult/SongSearchResult.vue";
 import { useAccountStore } from "@/stores/account";
-import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
+import { UserOutlined, MoreOutlined } from "@ant-design/icons-vue";
+import { logout } from "@/http/api";
+import { paddingStrStart } from "@/utils";
+import { useScroll } from "@vueuse/core";
 
 const emit = defineEmits([]);
 
@@ -123,15 +189,32 @@ const searchSong = async (pageNo = 1) => {
   if (!appStore.keywords.trim().length) {
     return;
   }
+
+  if (spinning.value) {
+    return;
+  }
+
   appStore.currentPage = pageNo;
   spinning.value = true;
   const { data } = await Api.searchSongs(appStore.keywords.trim(), pageNo, 15);
   spinning.value = false;
-  searchSongRes.value = data;
+  if (pageNo === 1) {
+    scrollEl.value?.scrollTo(0, 0);
+    searchSongRes.value = data;
+  } else {
+    searchSongRes.value!.total = data.total;
+    searchSongRes.value!.records = [
+      ...searchSongRes.value!.records,
+      ...data.records,
+    ];
+  }
 };
 
 const appStore = useAppStore();
 const searchSongRes = ref<SonglistRes>();
+const resetSearchSongRes = () => {
+  searchSongRes.value = undefined;
+};
 
 const handlePageChange = (pageNo: number) => {
   searchSong(pageNo);
@@ -143,6 +226,42 @@ const showModal = (isLogin: boolean) => {
   accountStore.loginRegisterModal.visible = true;
   accountStore.loginRegisterModal.isLogin = isLogin;
 };
+
+const handleLogout = async () => {
+  await logout();
+  appStore.removePlaylist();
+  accountStore.removeUser();
+};
+
+const searchChange = () => {
+  resetSearchSongRes();
+  appStore.currentPage = 1;
+  appStore.songSearchResultVisible = false;
+};
+
+const mobileMenuVisible = ref(false);
+const mobileSearchMenuVisible = ref(false);
+
+const scrollEl = ref<HTMLElement | null>(null);
+const { x, y, isScrolling, arrivedState, directions } = useScroll(scrollEl, {
+  offset: {
+    bottom: 60,
+  },
+});
+
+watch(y, () => {
+  if (arrivedState.bottom && !spinning.value) {
+    if (searchSongRes.value) {
+      if (searchSongRes.value.records.length < searchSongRes.value.total) {
+        searchSong(++appStore.currentPage);
+      } else {
+        // ...
+      }
+    } else {
+      searchSong(++appStore.currentPage);
+    }
+  }
+});
 </script>
 
 <style lang="less" scoped>

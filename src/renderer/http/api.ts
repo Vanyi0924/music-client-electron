@@ -10,8 +10,10 @@ export const initHttp = (config?: CreateAxiosDefaults<any> | undefined) => {
 
 const addPrefix = (path: string, prefix: string) => `${prefix}${path}`;
 
-export const addMusicPrefix = (path: string) => addPrefix(path, "/music");
+const addMusicPrefix = (path: string) => addPrefix(path, "/music");
 const addCaptchaPrefix = (path: string) => addPrefix(path, "/captcha");
+const addFavoritePrefix = (path: string) =>
+  addMusicPrefix(addPrefix(path, "/favorite"));
 
 /**
  * @description 分页获取歌单
@@ -72,6 +74,11 @@ export const login = (email: string, password: string) =>
   });
 
 /**
+ * @description: 登出
+ */
+export const logout = () => http.del<any>(addMusicPrefix("/logout"));
+
+/**
  * @description: 获取邮箱验证码
  */
 export const getEmailCaptcha = (email: string) =>
@@ -85,11 +92,35 @@ export const getEmailCaptcha = (email: string) =>
  * @description: 收藏歌曲
  */
 export const addFavorite = (songId: string) =>
-  http.post<any>(addMusicPrefix("/favorite/add"), {
-    songId,
-  });
+  http.put<any>(addMusicPrefix(`/favorite/add/${songId}`));
+
+/**
+ * @description: 取消收藏歌曲
+ */
+export const removeFavorite = (songId: string) =>
+  http.put<any>(addMusicPrefix(`/favorite/remove/${songId}`));
 
 /**
  * @description 是否登录
  */
 export const isLogin = () => http.get<boolean>(addMusicPrefix("/isLogin"));
+
+/**
+ * @description: 收藏歌曲
+ */
+export const getExistFavorite = () =>
+  http.get<
+    {
+      id: number;
+      userId: number;
+      songId: number;
+    }[]
+  >(addFavoritePrefix("/exist"));
+
+/**
+ * @description:
+ */
+export const getStream = () =>
+  http.get(addMusicPrefix("/test/stream"), {
+    responseType: "blob",
+  });
