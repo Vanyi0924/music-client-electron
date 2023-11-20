@@ -1,5 +1,5 @@
 <template>
-  <CommonList :list="list" @dblclick="(s: SongDetail)=> appStore.handlePlay(s)">
+  <CommonList :list="list" @play="(s: SongDetail)=> appStore.handlePlay(s)">
     <template
       #default="{ data: song, index }: { data: SongDetail, index: number }"
     >
@@ -38,6 +38,7 @@ import { message } from "ant-design-vue";
 import { addFavorite, removeFavorite } from "@/http/api";
 import { paddingStrStart } from "@/utils";
 import { useAccountStore } from "@/stores/account";
+import { SongDetail } from "@/typing";
 
 const appStore = useAppStore();
 defineProps<{ list: SongDetail[] }>();

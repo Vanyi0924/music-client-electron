@@ -2,9 +2,10 @@ import { Api } from "@/http";
 import { PLAYLIST } from "@/config/constants";
 import { nextSongIndex, PlayModel, SwitchSongDirection } from "@/utils";
 import { defineStore } from "pinia";
-import { Songlist } from "@/http/typings";
+import { AlbumDetail, Songlist } from "@/http/typings";
+import { SongDetail } from "@/typing";
 // import { Songlist } from "@music/common/types/typings";
-
+type SongId = string;
 interface AppState {
   songSearchResultVisible: boolean;
   searchIsFocus: boolean;
@@ -24,7 +25,7 @@ interface AppState {
   curSonglist?: Songlist;
   currentPage: number;
   historyState?: InstanceType<typeof window.History>["state"];
-  favoriteSongs: Map<string, { id: string; songId: string }>;
+  favoriteSongs: Map<SongId, { id: string; songId: string }>;
 }
 
 export const useAppStore = defineStore("app", {

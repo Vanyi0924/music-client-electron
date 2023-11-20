@@ -37,6 +37,8 @@ import { Api } from "@/http";
 import { withCache } from "@/utils/app-cache";
 import router from "@/router";
 import { UniqueKeys } from "@/enums/UniqueKeys";
+import { SongDetail } from "@/typing";
+import { setSongFavoriteState } from "@/utils/index-biz";
 
 const route = useRoute();
 
@@ -63,12 +65,7 @@ const getSongs = async () => {
   spinning.value = false;
 
   songs.value = data.map((d) => {
-    return {
-      ...d,
-      id: String(d.id),
-      albumId: String(d.albumId),
-      _hasFavorite: appStore.favoriteSongs.has(String(d.id)),
-    };
+    return setSongFavoriteState(d);
   });
 };
 

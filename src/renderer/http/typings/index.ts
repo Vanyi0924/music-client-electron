@@ -18,7 +18,7 @@ export interface BizResponse<T = any> {
   msg: string;
 }
 
-export interface SongDetail {
+export interface BkSongDetail {
   id: number;
   name: string;
   singerName: string;

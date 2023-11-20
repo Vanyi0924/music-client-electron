@@ -1,5 +1,5 @@
 import { CreateAxiosDefaults } from "axios";
-import { AlbumDetail, Page, SongDetail, Songlist } from "./typings";
+import { AlbumDetail, Page, BkSongDetail, Songlist } from "./typings";
 import { MusicAxios } from "./music-axios";
 
 export let http: MusicAxios;
@@ -29,7 +29,7 @@ export const getSonglistPage = (pageSize = 35) =>
  * @description: 获取歌单下所有歌曲
  */
 export const getSonglistSongs = (params: { songlistId: number }) =>
-  http.get<SongDetail[]>(addMusicPrefix(`/songlist/songs`), {
+  http.get<BkSongDetail[]>(addMusicPrefix(`/songlist/songs`), {
     params,
   });
 
@@ -47,7 +47,7 @@ export const getAlbumDetailApi = (id: number) =>
  * @description: 搜索歌曲
  */
 export const searchSongs = (keyword: string, pageNo = 1, pageSize = 10) =>
-  http.get<Page<SongDetail>>(addMusicPrefix("/song/search"), {
+  http.get<Page<BkSongDetail>>(addMusicPrefix("/song/search"), {
     params: {
       keyword,
       pageNo,
@@ -91,13 +91,13 @@ export const getEmailCaptcha = (email: string) =>
 /**
  * @description: 收藏歌曲
  */
-export const addFavorite = (songId: string) =>
+export const addFavorite = (songId: number) =>
   http.put<any>(addMusicPrefix(`/favorite/add/${songId}`));
 
 /**
  * @description: 取消收藏歌曲
  */
-export const removeFavorite = (songId: string) =>
+export const removeFavorite = (songId: number) =>
   http.put<any>(addMusicPrefix(`/favorite/remove/${songId}`));
 
 /**

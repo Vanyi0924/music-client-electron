@@ -27,6 +27,9 @@ app.mount("#app");
 
 (async () => {
   const appStore = useAppStore();
+
+  const { setSongFavoriteState } = await import("./utils/index-biz");
+
   router.afterEach(() => {
     appStore.historyState = window.history.state;
   });
@@ -39,26 +42,22 @@ app.mount("#app");
   if (hasLogged) {
     getExistFavorite().then(({ data }) => {
       const map = new Map<string, { id: string; songId: string }>();
+
       (data || []).forEach((d) => {
         // 已收藏的歌曲 map
         map.set(String(d.songId), {
           id: String(d.id),
           songId: String(d.songId),
         });
-
-        // 设置播放列表
-        const playlistSong = appStore.playlist.find(
-          (songDetail) => songDetail.id === String(d.id)
-        );
-
-        playlistSong && (playlistSong._hasFavorite = true);
       });
-
-      appStore.setPlaylist(appStore.playlist);
       appStore.favoriteSongs = map;
+
+      // 设置播放列表
+      appStore.playlist.forEach((songDetail) => {
+        setSongFavoriteState(songDetail);
+      });
+      appStore.setPlaylist(appStore.playlist);
     });
-    // favoriteSongs
-    // ...
   } else {
     appStore.removePlaylist();
     accountStore.removeUser();

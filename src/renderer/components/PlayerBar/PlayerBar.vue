@@ -106,9 +106,10 @@
     <div
       v-show="appStore.showPlaylist"
       ref="playlistEl"
-      class="fixed bottom-20 right-[theme(frameSize)] h-[420px] w-[420px] overflow-auto bg-app-dark-color-300/75 py-4 backdrop-blur-md"
+      class="fixed bottom-20 h-[60%] w-[95%] overflow-auto rounded-t-xl bg-app-dark-color-300/75 py-4 backdrop-blur-md"
     >
-      <p class="mb-1 ml-7 opacity-75">播放列表</p>
+      <!-- class="fixed bottom-20 right-[theme(frameSize)] h-[420px] w-[420px] overflow-auto bg-app-dark-color-300/75 py-4 backdrop-blur-md" -->
+      <p class="mb-1 ml-4 opacity-75 sm:ml-7">播放列表</p>
       <CommonSongList :list="appStore.playlist">
         <template #suffix="{ song }">
           <div class="pr-4">

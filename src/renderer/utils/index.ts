@@ -180,3 +180,8 @@ export const paddingStrStart = <T = any>(
 ): string => {
   return str.toString().padStart(maxLen, fillStr);
 };
+
+/**
+ * @description: isMobile ?
+ */
+export const isMobile = () => /Mobi|Android|iPhone/i.test(navigator.userAgent);

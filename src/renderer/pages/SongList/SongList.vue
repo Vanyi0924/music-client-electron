@@ -12,7 +12,7 @@
           @click="gotoDetail(sl)"
         >
           <a-image
-            class="aspect-auto w-full rounded-2xl"
+            class="aspect-[1] w-full rounded-2xl"
             :preview="false"
             :src="sl.cover"
             :placeholder="true"
@@ -36,7 +36,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { withCache } from "@/utils/app-cache";
 import { UniqueKeys } from "@/enums/UniqueKeys";
-import { Songlist } from "@music/common/types/typings";
+import { Songlist } from "@/http/typings";
 
 const appStore = useAppStore();
 
@@ -55,10 +55,6 @@ const getSonglist = async () => {
   songlist.value = data.records.map((r) => {
     return r;
   });
-};
-
-const handlePlay = async (song: SongDetail) => {
-  appStore.handlePlay(song);
 };
 
 onMounted(() => {

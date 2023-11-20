@@ -153,6 +153,7 @@
           <li
             v-for="(record, index) in searchSongRes?.records"
             class="flex py-2"
+            @dblclick="() => appStore.handlePlay(record)"
           >
             <i class="w-8">{{ paddingStrStart(index + 1) }}</i>
             <span class="flex-auto">{{ record.name }}</span>
@@ -180,6 +181,7 @@ import { UserOutlined, MoreOutlined } from "@ant-design/icons-vue";
 import { logout } from "@/http/api";
 import { paddingStrStart } from "@/utils";
 import { useScroll } from "@vueuse/core";
+import { SongDetail } from "@/typing";
 
 const emit = defineEmits([]);
 
@@ -211,7 +213,10 @@ const searchSong = async (pageNo = 1) => {
 };
 
 const appStore = useAppStore();
-const searchSongRes = ref<SonglistRes>();
+const searchSongRes = ref<{
+  records: SongDetail[];
+  total: number;
+}>();
 const resetSearchSongRes = () => {
   searchSongRes.value = undefined;
 };
