@@ -10,5 +10,10 @@
 /* reset antdesign styles */
 .ant-spin-dot-item{
   @apply bg-app-base-color;
-
 }
+
+a.router-link-active.router-link-exact-active{
+  @apply text-app-base-color;
+}
+
+

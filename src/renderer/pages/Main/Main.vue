@@ -3,7 +3,9 @@
     <CommonHeader ref="commonHeaderRef"> </CommonHeader>
 
     <!-- VIEW -->
-    <div class="mx-auto mb-[theme(height.common)] mt-5 pb-5">
+    <div
+      class="mb-[theme(height.common)] max-w-[theme(width.limit)] sm:mx-auto sm:mt-5 sm:pb-5 lg:w-full"
+    >
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />

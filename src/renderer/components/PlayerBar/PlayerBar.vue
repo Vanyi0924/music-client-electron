@@ -3,17 +3,30 @@
     class="player-bar fixed bottom-0 left-0 flex h-common w-full justify-center bg-app-dark-color-300 px-4 text-white"
   >
     <!-- 进度条 -->
-    <ProgressBar
+    <!--  <ProgressBar
       v-model:process="process"
-      class="song-progress-bar absolute top-0"
+    /> -->
+
+    <a-slider
+      class="song-progress-bar absolute top-[-16px] z-50 w-full"
+      v-model:value="process"
+      :tooltipOpen="false"
     />
 
-    <div class="relative flex w-full items-center justify-center">
+    <div
+      class="relative flex w-full max-w-[theme(width.limit)] items-center justify-center lg:mx-auto"
+    >
       <!-- 歌曲信息 -->
       <div class="song-detail absolute left-0">
         <div class="thumbnail group flex items-center justify-center">
           <div v-if="appStore?.albumDetail" class="relative">
-            <img :src="appStore?.albumDetail.picUrl" width="52" height="52" />
+            <a-image
+              :preview="false"
+              :src="appStore?.albumDetail.picUrl"
+              :placeholder="true"
+              width="52px"
+              fallback="data:image/png;base64,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"
+            />
 
             <div
               v-if="$route.path !== `/playDetail`"
@@ -52,9 +65,9 @@
       </div>
 
       <!-- 控制 -->
-      <div class="controls flex items-center fill-app-base-color">
+      <div class="controls z-10 flex items-center fill-app-base-color">
         <!-- 上一曲 -->
-        <m-icon @click.stop="switchSong(SwitchSongDirection.prev)">
+        <m-icon @click="switchSong(SwitchSongDirection.prev)">
           <BackwardStepIcon />
         </m-icon>
         <div class="play-pause relative mx-4 flex items-center justify-center">
@@ -74,7 +87,7 @@
           </m-icon>
         </div>
         <!-- 下一曲 -->
-        <m-icon @click.stop="switchSong(SwitchSongDirection.next)">
+        <m-icon @click="switchSong(SwitchSongDirection.next)">
           <ForwardStepIcon />
         </m-icon>
       </div>
@@ -83,22 +96,22 @@
       <div
         class="opt-area absolute right-0 flex items-center text-app-base-color"
       >
-        <m-icon
-          class="mr-4"
-          :width="24"
-          @click.stop="appStore.showPlaylist = true"
-        >
-          <MenuIcon />
-        </m-icon>
-
         <a-tooltip placement="top">
           <template #title>
             <span>{{ curPlayModel?.label }}</span>
           </template>
-          <m-icon :width="20" @click="() => appStore.setPlayModel()">
+          <m-icon
+            class="mr-4"
+            :width="20"
+            @click="() => appStore.setPlayModel()"
+          >
             <component :is="curPlayModel?.icon" />
           </m-icon>
         </a-tooltip>
+
+        <m-icon :width="24" @click.stop="appStore.showPlaylist = true">
+          <MenuIcon />
+        </m-icon>
       </div>
     </div>
 
@@ -106,23 +119,38 @@
     <div
       v-show="appStore.showPlaylist"
       ref="playlistEl"
-      class="fixed bottom-20 h-[60%] w-[95%] overflow-auto rounded-t-xl bg-app-dark-color-300/75 py-4 backdrop-blur-md"
+      class="fixed bottom-0 left-0 z-10 h-[100vh] w-full"
+      @click.self.stop="appStore.showPlaylist = false"
     >
-      <!-- class="fixed bottom-20 right-[theme(frameSize)] h-[420px] w-[420px] overflow-auto bg-app-dark-color-300/75 py-4 backdrop-blur-md" -->
-      <p class="mb-1 ml-4 opacity-75 sm:ml-7">播放列表</p>
-      <CommonSongList :list="appStore.playlist">
-        <template #suffix="{ song }">
-          <div class="pr-4">
-            <m-icon
-              :width="16"
-              :opacity="0.75"
-              @click="removePlaylistItem(song)"
-            >
-              <CloseIcon />
-            </m-icon>
-          </div>
-        </template>
-      </CommonSongList>
+      <div
+        class="absolute bottom-20 ml-[2.5%] h-[60%] w-[95%] overflow-auto rounded-t-xl bg-app-dark-color-300/75 py-4 backdrop-blur-md md:right-[theme(frameSize)] md:h-[420px] md:w-[420px]"
+      >
+        <p class="my-4 ml-4 flex justify-between opacity-75 sm:ml-7">
+          播放列表
+        </p>
+
+        <m-icon
+          class="absolute right-3 top-3"
+          :width="24"
+          :opacity="0.75"
+          @click="appStore.showPlaylist = false"
+        >
+          <CloseIcon />
+        </m-icon>
+        <CommonSongList :list="appStore.playlist">
+          <template #suffix="{ song }">
+            <div class="pr-4">
+              <m-icon
+                :width="16"
+                :opacity="0.75"
+                @click="removePlaylistItem(song)"
+              >
+                <CloseIcon />
+              </m-icon>
+            </div>
+          </template>
+        </CommonSongList>
+      </div>
     </div>
   </div>
 </template>
@@ -153,6 +181,7 @@ import LoopSingleIcon from "@/assets/icons/vue/LoopSingle.vue";
 import router from "@/router";
 import CommonSongList from "../biz/CommonSongList.vue";
 import { useClickIsOutside } from "@/hooks";
+import { SongDetail } from "@/typing";
 
 interface Props {
   songDetail?: SongDetail;
@@ -165,10 +194,10 @@ defineEmits(["actionPlay"]);
 const appStore = useAppStore();
 
 const process = computed({
-  get: () => appStore.playingTimestamp / appStore.songDuration,
+  get: () => (appStore.playingTimestamp / appStore.songDuration) * 100,
   set: (newVal) => {
     if (appStore.audioEl) {
-      appStore.audioEl.currentTime = appStore.songDuration * newVal;
+      appStore.audioEl.currentTime = (appStore.songDuration * newVal) / 100;
     }
   },
 });

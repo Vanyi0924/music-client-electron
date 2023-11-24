@@ -1,6 +1,6 @@
 <template>
   <header
-    class="app-drag sticky left-0 top-0 z-50 flex w-full flex-shrink-0 px-4 text-sm"
+    class="app-drag sticky left-0 top-0 z-50 flex w-full flex-shrink-0 px-4 text-sm lg:px-0"
   >
     <!-- backgroud -->
     <div
@@ -8,7 +8,7 @@
     ></div>
     <!-- 内容区域 -->
     <div
-      class="relative mx-auto flex h-common w-full items-center justify-between"
+      class="relative mx-auto flex h-common w-full max-w-[theme(width.limit)] items-center justify-between lg:mx-auto"
     >
       <div class="flex items-center">
         <MusicLogo />
@@ -33,18 +33,15 @@
             </m-icon>
           </div>
         </div>
-        <div class="router-wrapper ml-8 hidden text-white/75 sm:block">
+        <div class="router-wrapper ml-8 hidden text-white/75 md:block">
           <router-link to="/songlist">热门歌单</router-link>
           <!-- <router-link to="/songlist1">排行榜</router-link> -->
         </div>
       </div>
 
-      <div class="right-wrapper flex">
+      <div class="right-wrapper flex items-center">
         <!-- 未登录  -->
-        <div
-          v-if="!accountStore.isLogin"
-          class="mr-4 flex items-center opacity-80"
-        >
+        <div v-if="!accountStore.isLogin" class="flex items-center opacity-80">
           <a-tooltip placement="top">
             <template #title>
               <span>登录后可下载、收藏海量歌曲</span>
@@ -67,7 +64,7 @@
         </div>
         <!-- 已登录 -->
         <div v-else class="mr-4 flex cursor-pointer items-center">
-          <a-dropdown placement="bottom">
+          <a-dropdown placement="bottom" :trigger="['click', 'hover']">
             <UserOutlined style="font-size: 20px" class="text-white" />
             <template #overlay>
               <a-menu>
@@ -83,7 +80,7 @@
         </div>
 
         <m-icon
-          class="mx-2 flex-shrink-0 cursor-pointer text-white sm:hidden"
+          class="mx-2 flex-shrink-0 cursor-pointer text-white md:hidden"
           :width="20"
           @click="mobileSearchMenuVisible = true"
         >
@@ -91,7 +88,7 @@
         </m-icon>
 
         <m-icon
-          class="mx-2 flex-shrink-0 cursor-pointer text-white sm:hidden"
+          class="mx-2 flex-shrink-0 cursor-pointer text-white md:hidden"
           :width="20"
           @click="mobileMenuVisible = true"
         >
@@ -99,19 +96,19 @@
         </m-icon>
 
         <a-input
-          class="hidden sm:block"
+          class="hidden md:flex"
           v-model:value="appStore.keywords"
           placeholder="搜索"
           allow-clear
           style="border-radius: 1rem"
           @keyup.enter="() => searchSong()"
-          @focus="
+        >
+          <!-- @focus="
             (appStore.searchIsFocus = true),
               (appStore.songSearchResultVisible = true)
           "
           @blur="appStore.searchIsFocus = false"
-          @change="searchChange"
-        >
+          @change="searchChange" -->
           <template #prefix>
             <m-icon class="mx-2 flex-shrink-0" :width="16">
               <SearchIcon />
@@ -130,10 +127,15 @@
 
     <!-- mobile 菜单 -->
     <a-modal v-model:open="mobileMenuVisible" :footer="null">
-      <router-link to="/songlist">热门歌单</router-link>
+      <router-link
+        class="block w-full"
+        to="/songlist"
+        @click="mobileMenuVisible = false"
+        >热门歌单</router-link
+      >
     </a-modal>
 
-    <!-- mobile 菜单 -->
+    <!-- mobile 搜索 -->
     <a-modal v-model:open="mobileSearchMenuVisible" :footer="null">
       <div class="flex h-[60vh] flex-col">
         <a-input-search
@@ -149,19 +151,12 @@
           <strong class="text-app-base-color">{{ searchSongRes.total }}</strong>
           个结果
         </p>
-        <ul class="h-0 flex-auto overflow-auto scroll-auto" ref="scrollEl">
-          <li
-            v-for="(record, index) in searchSongRes?.records"
-            class="flex py-2"
-            @dblclick="() => appStore.handlePlay(record)"
-          >
-            <i class="w-8">{{ paddingStrStart(index + 1) }}</i>
-            <span class="flex-auto">{{ record.name }}</span>
-            <span class="w-16 flex-shrink-0 truncate text-right">{{
-              record.singerName
-            }}</span>
-          </li>
-        </ul>
+        <div class="h-0 flex-auto overflow-auto scroll-auto" ref="scrollEl">
+          <CommonSongList
+            class="search-songlist"
+            :list="searchSongRes?.records"
+          ></CommonSongList>
+        </div>
       </div>
     </a-modal>
   </header>
@@ -182,6 +177,7 @@ import { logout } from "@/http/api";
 import { paddingStrStart } from "@/utils";
 import { useScroll } from "@vueuse/core";
 import { SongDetail } from "@/typing";
+import { setSongFavoriteState } from "@/utils/index-biz";
 
 const emit = defineEmits([]);
 
@@ -196,18 +192,23 @@ const searchSong = async (pageNo = 1) => {
     return;
   }
 
+  mobileSearchMenuVisible.value = true;
+
   appStore.currentPage = pageNo;
   spinning.value = true;
   const { data } = await Api.searchSongs(appStore.keywords.trim(), pageNo, 15);
   spinning.value = false;
   if (pageNo === 1) {
     scrollEl.value?.scrollTo(0, 0);
-    searchSongRes.value = data;
+    searchSongRes.value = {
+      total: data.total,
+      records: data.records.map((r) => setSongFavoriteState(r)),
+    };
   } else {
     searchSongRes.value!.total = data.total;
     searchSongRes.value!.records = [
       ...searchSongRes.value!.records,
-      ...data.records,
+      ...data.records.map((r) => setSongFavoriteState(r)),
     ];
   }
 };
@@ -255,7 +256,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(scrollEl, {
 });
 
 watch(y, () => {
-  if (arrivedState.bottom && !spinning.value) {
+  if (arrivedState.bottom && !spinning.value && appStore.keywords) {
     if (searchSongRes.value) {
       if (searchSongRes.value.records.length < searchSongRes.value.total) {
         searchSong(++appStore.currentPage);
@@ -302,7 +303,7 @@ watch(y, () => {
   & > a {
     @apply mr-4;
     &.router-link-exact-active {
-      @apply text-lg text-white;
+      @apply text-lg;
     }
   }
 }
@@ -311,6 +312,15 @@ watch(y, () => {
   @apply text-white/75 transition-all hover:text-white;
   &.regist-btn {
     @apply text-app-base-color/90 hover:text-app-base-color;
+  }
+}
+
+.search-songlist {
+  :deep(li) {
+    padding-left: 0;
+    .index {
+      width: 28px;
+    }
   }
 }
 </style>

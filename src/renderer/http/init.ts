@@ -11,7 +11,6 @@ export const configApi = () => {
   Api.initHttp({
     baseURL: renderer.baseURL,
     timeout: 30000,
-    // baseURL: "https://music.vanyi.top/api",
   });
 
   Api.http.axios.interceptors.request.use(

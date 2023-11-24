@@ -1,26 +1,31 @@
 <template>
   <div class="songlist-detail">
-    <div class="header flex">
-      <a-image
-        :src="curSonglist?.cover"
-        class="rou rounded-2xl"
-        :width="220"
-        :height="220"
-        :preview="false"
-        :placeholder="true"
-        :alt="curSonglist?.description"
-      />
-      <div class="mt-12 flex-auto pl-4">
-        <p class="text-center text-[30px] text-white">
+    <div class="header mt-4 sm:flex">
+      <div class="w-full sm:w-[220px]">
+        <a-image
+          :src="curSonglist?.cover"
+          class="sm:rounded-2xl"
+          width="100%"
+          :preview="false"
+          :placeholder="true"
+          :alt="curSonglist?.description"
+        />
+      </div>
+      <div class="mt-6 flex-auto pl-4 sm:mt-12">
+        <p class="text-[26px] text-white sm:text-center sm:text-[30px]">
           {{ curSonglist?.description }}
         </p>
-        <p class="text-right text-13 text-white/75">
+        <p class="mt-4 hidden pr-4 text-right text-13 text-white/75 sm:block">
           —— {{ curSonglist?.updatedAt }}
         </p>
       </div>
     </div>
-    <div>
-      <p class="my-2 text-right text-white">共{{ songs.length }}首歌曲</p>
+    <div class="w-full">
+      <p class="my-2 pr-4 text-right text-xs text-white opacity-75">
+        共
+        <strong class="font-bold text-app-sub-color">{{ songs.length }}</strong>
+        首歌曲
+      </p>
       <a-spin :spinning="spinning" :delay="200">
         <CommonSongList class="songlist" :list="songs" />
       </a-spin>
@@ -97,16 +102,15 @@ onUnmounted(() => {
 
 <style lang="less" scoped>
 .songlist {
-  :deep(.section-item-list) {
-    padding: 0.5rem 1rem;
-    .album-name {
-      width: 12rem;
-    }
-    .singer-name {
-      width: 10rem;
-      text-align: right;
-    }
-  }
+  // :deep(.section-item-list) {
+  //   padding: 0.5rem 1rem;
+  //   .album-name {
+  //     width: 12rem;
+  //   }
+  //   .singer-name {
+  //     width: 10rem;
+  //     text-align: right;
+  //   }
+  // }
 }
 </style>
-@/enums/UniqueKeys

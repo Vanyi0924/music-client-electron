@@ -3,7 +3,7 @@
     <template
       #default="{ data: song, index }: { data: SongDetail, index: number }"
     >
-      <span class="mr-2 w-4 text-right text-white">
+      <span class="index mr-2 w-4 text-right text-white">
         {{ paddingStrStart(String(index + 1)) }}
       </span>
 
@@ -21,7 +21,7 @@
       <span class="ellipsis album-name w-20 pr-1 opacity-80">
         {{ song.albumName }}
       </span>
-      <span class="ellipsis singer-name w-20 pr-2 opacity-60">
+      <span class="ellipsis singer-name w-20 pr-2 text-right opacity-60">
         {{ song.singerName }}
       </span>
       <slot name="suffix" :song="song"></slot>
@@ -41,7 +41,7 @@ import { useAccountStore } from "@/stores/account";
 import { SongDetail } from "@/typing";
 
 const appStore = useAppStore();
-defineProps<{ list: SongDetail[] }>();
+defineProps<{ list?: SongDetail[] }>();
 
 const accountStore = useAccountStore();
 

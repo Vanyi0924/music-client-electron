@@ -1,7 +1,7 @@
 <template>
   <ul class="section-item select-none">
     <li
-      class="section-item-list relative flex cursor-pointer py-2 pl-4 text-xs even:bg-app-dark-color-400/50 hover:text-white sm:pl-7"
+      class="section-item-list relative flex h-12 cursor-pointer items-center py-2 pl-4 even:bg-app-dark-color-400/50 hover:text-white active:opacity-50 sm:pl-7"
       v-for="(l, index) in list"
       @[triggerEvt]="handlePlay(l)"
     >

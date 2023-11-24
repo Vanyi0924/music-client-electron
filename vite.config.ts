@@ -20,6 +20,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     // root,
     // base: "",
     server: {
+      host: "0.0.0.0",
       port: 9024,
     },
     resolve: {

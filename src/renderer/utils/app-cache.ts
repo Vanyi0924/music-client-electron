@@ -61,16 +61,14 @@ export const withCache = async <T = any>(args: KeyParams): Promise<T> => {
 
   args.params = args.params ?? [];
 
-  if (appCache.has(args)) {
-    return appCache.get<T>(args).data;
-  } else {
-    const result = await args.fn(...args.params);
-    const row = appCache.add(args, {
-      data: result,
-    });
+  // if (appCache.has(args)) {
+  //   return appCache.get<T>(args).data;
+  // } else {
+  const result = await args.fn(...args.params);
+  // const row = appCache.add(args, {
+  //   data: result,
+  // });
 
-    console.log(row);
-
-    return result;
-  }
+  return result;
+  // }
 };

@@ -1,13 +1,16 @@
 <template>
   <div
-    class="player-area mx-auto flex h-full max-w-[920px] justify-between px-20 pt-6"
+    class="player-area mx-auto flex h-full justify-center sm:max-w-[920px] sm:justify-between sm:px-20 sm:pt-6"
   >
-    <div class="mr-8 flex-shrink-0">
-      <!-- :style="{ animationPlayState: appState.isPlaying ? `running` : `paused` }" -->
+    <!-- @click="showCover = !showCover" -->
+    <div
+      v-show="showCover"
+      class="mt-16 hidden flex-shrink-0 sm:mr-20 md:block"
+    >
       <img :src="albumDetail?.picUrl" width="340" class="smooth-corner" />
     </div>
 
-    <div class="song-info min-w-[340px] text-white">
+    <div v-show="showCover" class="song-info mt-8 min-w-[340px] text-white">
       <h3 class="text-3xl">{{ songDetail?.name }}</h3>
       <div class="info my-4 flex text-13 opacity-60">
         <div class="info-item flex">
@@ -61,8 +64,11 @@ import { useAppStore } from "@/stores";
 import { lyricStr2PerLyric, lyricStr2PerLyricV2 } from "@/utils";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import MusicIcon from "@/assets/icons/vue/Music.vue";
+import { PerLyric } from "@/typing";
 
 interface Props {}
+
+const showCover = ref(true);
 
 const appStore = useAppStore();
 const albumDetail = computed(() => appStore.albumDetail);
