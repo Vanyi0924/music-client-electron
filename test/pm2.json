@@ -1,0 +1,9 @@
+{
+  "name": "rmq-dashboard",
+  "script": "java",
+  "args": [
+    "-jar",
+    "rocketmq-dashboard-1.0.1-SNAPSHOT.jar",
+    "--server.port=9091"
+  ]
+}

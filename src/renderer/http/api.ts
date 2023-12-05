@@ -11,7 +11,8 @@ export const initHttp = (config?: CreateAxiosDefaults<any> | undefined) => {
 const addPrefix = (path: string, prefix: string) => `${prefix}${path}`;
 
 const addMusicPrefix = (path: string) => addPrefix(path, "/music");
-const addCaptchaPrefix = (path: string) => addPrefix(path, "/captcha");
+const addCaptchaPrefix = (path: string) =>
+  addMusicPrefix(addPrefix(path, "/captcha"));
 const addFavoritePrefix = (path: string) =>
   addMusicPrefix(addPrefix(path, "/favorite"));
 
@@ -58,10 +59,11 @@ export const searchSongs = (keyword: string, pageNo = 1, pageSize = 10) =>
 /**
  * @description: 注册
  */
-export const register = (email: string, code: string) =>
+export const register = (email: string, code: string, password: string) =>
   http.post<any>(addMusicPrefix("/register"), {
     email,
     code,
+    password,
   });
 
 /**

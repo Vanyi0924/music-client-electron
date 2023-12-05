@@ -29,7 +29,7 @@ export default (): ElectronVueConfig => {
     },
     renderer: {
       baseURL: isDev
-        ? "http://192.168.2.26:10926/api"
+        ? "http://127.0.0.1:10926/api"
         : "https://api.vanyi.top/api",
     },
   };

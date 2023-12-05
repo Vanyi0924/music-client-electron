@@ -16,4 +16,6 @@ a.router-link-active.router-link-exact-active{
   @apply text-app-base-color;
 }
 
-
+.ant-input-search-button:not(.ant-btn-primary)[disabled]:hover{
+  color: rgba(255, 255, 255, 0.45) !important;
+}
